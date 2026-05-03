@@ -7,6 +7,8 @@ import { fileURLToPath } from 'url';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 
+import { v2 as cloudinary } from 'cloudinary';
+
 dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
@@ -15,6 +17,13 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 3001;
 const MONGO_URI = process.env.MONGO_URI;
+
+// Cloudinary Configuration
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key:    process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
 
 // Middleware
 app.use(cors());
@@ -49,6 +58,24 @@ itemSchema.virtual('id').get(function() {
 
 const GalleryItem = mongoose.model('GalleryItem', itemSchema);
 
+// --- SITE CONFIG SCHEMA ---
+const configSchema = new mongoose.Schema({
+  nav: Object,
+  hero: Object,
+  stats: Array,
+  marquee: Array,
+  showreel: Object,
+  beforeAfter: Array,
+  services: Array,
+  tools: Array,
+  process: Array,
+  testimonials: Array,
+  contact: Object,
+  links: Object,
+}, { timestamps: true });
+
+const SiteConfig = mongoose.model('SiteConfig', configSchema);
+
 // Multer setup for file uploads
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -65,6 +92,35 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // --- API ROUTES ---
+
+// Get site config
+app.get('/api/config', async (req, res) => {
+  try {
+    let config = await SiteConfig.findOne();
+    if (!config) {
+      return res.status(404).json({ error: 'Config not found' });
+    }
+    res.json(config);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch config' });
+  }
+});
+
+// Update site config
+app.put('/api/config', async (req, res) => {
+  try {
+    let config = await SiteConfig.findOne();
+    if (!config) {
+      config = new SiteConfig(req.body);
+    } else {
+      Object.assign(config, req.body);
+    }
+    await config.save();
+    res.json(config);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to update config' });
+  }
+});
 
 // Get all items
 app.get('/api/items', async (req, res) => {
@@ -131,13 +187,26 @@ app.post('/api/items/reorder', async (req, res) => {
   }
 });
 
-// Upload image
-app.post('/api/upload', upload.single('file'), (req, res) => {
+// Upload image (Now uses Cloudinary)
+app.post('/api/upload', upload.single('file'), async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: 'No file uploaded' });
   }
-  const url = `http://localhost:${PORT}/uploads/${req.file.filename}`;
-  res.json({ secure_url: url });
+
+  try {
+    // Upload to Cloudinary
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      folder: 'photoediting_vibes',
+    });
+
+    // Delete local file after upload
+    fs.unlinkSync(req.file.path);
+
+    res.json({ secure_url: result.secure_url });
+  } catch (error) {
+    console.error('Cloudinary Upload Error:', error);
+    res.status(500).json({ error: 'Failed to upload image to cloud' });
+  }
 });
 
 app.listen(PORT, () => {

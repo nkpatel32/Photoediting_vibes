@@ -4,7 +4,7 @@
 
 const ADMIN_KEY   = 'pev_admin_token';
 const ADMIN_PASS  = 'pev2025'; // Change this password
-const API_URL     = 'http://localhost:3001/api';
+const API_URL     = 'https://photoediting-vibes.onrender.com/api';
 
 // ── CRUD helpers ─────────────────────────────────────────────────
 export async function getItems() {
