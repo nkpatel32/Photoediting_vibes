@@ -214,6 +214,61 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
+// --- AUTO-SEED LOGIC ---
+const DEFAULT_SITE = {
+  nav: { logo: 'PEV', logoSuffix: 'ibes', igText: '@photoediting_vibes ↗', igLink: 'https://instagram.com/photoediting_vibes' },
+  hero: {
+    eyebrow: 'Photo · Video · AI Editing · 54K+ Community',
+    line1: 'VISUAL', line2: 'EDITING', line3: 'VIBES.',
+    subtitle: 'Lightroom mastery, cinematic color grades, AI-powered edits — turning raw shots into scroll-stopping visuals. Based in India. Working worldwide.',
+    cta1: 'Watch Showreel', cta2: 'Get Quote',
+  },
+  stats: [
+    { target: 54, unit: 'K+', label: 'Instagram Followers' },
+    { target: 148, unit: '+', label: 'Projects Delivered' },
+    { target: 5, unit: '+', label: 'Years Experience' },
+    { target: 100, unit: '%', label: 'Client Satisfaction' },
+  ],
+  marquee: [ 'Lightroom Editing', 'AI Photo Editing', 'Color Grading', 'Video Editing', 'Cinematic LUTs', 'Photo Retouching', 'Motion Graphics', 'Reels & Shorts', 'Brand Content' ],
+  showreel: {
+    label: '01 — Showreel', heading1: 'WATCH THE', heading2: 'MAGIC', heading3: 'HAPPEN',
+    description: 'A curated reel of my best photo and video edits.',
+    videoUrl: '', bgImage: 'https://images.unsplash.com/photo-1536240478700-b869070f9279?w=1600&q=80',
+    timecode: '00:00:00:00 • 4K • 60fps', playerTitle: 'PHOTOEDITING VIBES — 2025 SHOWREEL',
+  },
+  beforeAfter: [
+    { id: 1, tag: 'Portrait Retouch', before: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=800&q=80', after: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&q=80' },
+  ],
+  services: [
+    { id: 1, icon: 'Camera', name: 'Lightroom Editing', desc: 'Custom preset creation, batch editing.', tools: ['Lightroom'] },
+  ],
+  tools: [ { id: 1, name: 'Lightroom', cat: 'Photo Editing', level: 98 } ],
+  process: [
+    { id: 1, name: 'Brief', desc: 'You share your vision.' },
+    { id: 2, name: 'Review', desc: "I assess files." },
+    { id: 3, name: 'Edit', desc: 'First pass delivered.' },
+    { id: 4, name: 'Revise', desc: 'Feedback and refinement.' },
+    { id: 5, name: 'Deliver', desc: 'Final exports.' },
+  ],
+  testimonials: [ { id: 1, text: "Amazing work!", author: 'Client', role: 'Artist' } ],
+  contact: { label: '08 — Let\'s Work', bigLine1: 'LET\'S', bigLine2: 'CREATE', bigLine3: 'TOGETHER.', description: 'DM me for paid editing.', igHandle: '@photoediting_vibes', igLink: 'https://instagram.com/photoediting_vibes', email: '', phone: '' },
+  links: { instagram: 'https://instagram.com/photoediting_vibes', youtube: '#', behance: '#', linkedin: '#', footerCopy: '© 2025 @photoediting_vibes' },
+};
+
+async function seedDB() {
+  try {
+    const count = await SiteConfig.countDocuments();
+    if (count === 0) {
+      console.log('🌱 DB is empty. Seeding default site config...');
+      await new SiteConfig(DEFAULT_SITE).save();
+      console.log('✅ Seeding complete!');
+    }
+  } catch (err) {
+    console.error('❌ Auto-seeding failed:', err);
+  }
+}
+
+app.listen(PORT, async () => {
   console.log(`🚀 Backend server running on http://localhost:${PORT}`);
+  await seedDB();
 });
