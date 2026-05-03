@@ -86,6 +86,7 @@ export default function AdminPanel() {
         </button>
         <div className="ap-topbar-logo">
           {site.nav.logo}<span>{site.nav.logoSuffix}</span>
+          {site.nav.logoImage && <img src={site.nav.logoImage} alt="logo" style={{height: '20px', marginLeft: '8px', objectFit: 'contain'}} />}
           <em>Admin</em>
         </div>
         <div className="ap-topbar-section">{activeLabel}</div>
@@ -108,7 +109,10 @@ export default function AdminPanel() {
       <aside className={`ap-drawer ${drawerOpen ? 'open' : ''}`}>
         <div className="ap-drawer-head">
           <div className="ap-drawer-logo">
-            {site.nav.logo}<span>{site.nav.logoSuffix}</span>
+            <div style={{display: 'flex', alignItems: 'center'}}>
+              {site.nav.logo}<span>{site.nav.logoSuffix}</span>
+              {site.nav.logoImage && <img src={site.nav.logoImage} alt="logo" style={{height: '24px', marginLeft: '8px', objectFit: 'contain'}} />}
+            </div>
             <div className="ap-drawer-sub">Admin Panel</div>
           </div>
           <button className="ap-drawer-close" onClick={() => setDrawerOpen(false)}>

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Mail, Phone, Camera, Video, Briefcase, Globe, MessageSquare, Info } from 'lucide-react';
 import { useSite } from '../../context/SiteContext';
-import { SectionWrap, Field, Input, Textarea, Row, Divider } from './AdminFields';
+import { SectionWrap, Field, Input, Textarea, Row, Divider, FileInput, ImgPreview } from './AdminFields';
 
 export default function ContactAdmin() {
   const { site, updateSect } = useSite();
@@ -83,6 +83,12 @@ export default function ContactAdmin() {
         </Field>
         <Field label="Logo Suffix" hint="muted grey part">
           <Input value={nav.logoSuffix} onChange={v => setN('logoSuffix', v)} placeholder="ibes" />
+        </Field>
+      </Row>
+      <Row>
+        <Field label="Navbar Logo Image (Optional)" hint="appears next to text">
+          <FileInput value={nav.logoImage} onChange={v => setN('logoImage', v)} placeholder="https://..." />
+          <ImgPreview src={nav.logoImage} label="Logo Image" />
         </Field>
       </Row>
       <Row>

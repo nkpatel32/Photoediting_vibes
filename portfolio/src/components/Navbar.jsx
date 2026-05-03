@@ -25,6 +25,7 @@ export default function Navbar() {
     <nav className="navbar">
       <div className="logo" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
         {nav.logo}<span>{nav.logoSuffix}</span>
+        {nav.logoImage && <img src={nav.logoImage} alt="Logo" className="nav-logo-img" />}
       </div>
       <div className="nav-links">
         {navItems.map(link => (

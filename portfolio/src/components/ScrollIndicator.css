@@ -1,0 +1,27 @@
+.scroll-indicator-wrap {
+  width: 100%;
+  max-width: 200px;
+  height: 2px;
+  background: rgba(242, 237, 228, 0.1);
+  margin: 2rem auto 0;
+  position: relative;
+  overflow: hidden;
+  border-radius: 2px;
+  display: none; /* Hidden by default, shown on mobile */
+}
+
+.scroll-indicator-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: var(--gold);
+  transition: width 0.15s ease-out;
+  min-width: 5%; /* So it's never completely invisible */
+}
+
+@media (max-width: 900px) {
+  .scroll-indicator-wrap {
+    display: block;
+  }
+}
