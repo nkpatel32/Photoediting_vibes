@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>photoediting_vibes — Visual Artist Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --ink:#070707;
+  --paper:#f2ede4;
+  --gold:#d4a843;
+  --ember:#c0392b;
+  --dim:#111;
+  --mid:#1c1c1c;
+  --fog:rgba(242,237,228,0.06);
+  --gfog:rgba(212,168,67,0.08);
+}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--ink);
+  color:var(--paper);
+  font-family:'Syne',sans-serif;
+  font-weight:300;
+  overflow-x:hidden;
+  cursor:none;
+}
+
+/* CUSTOM CURSOR */
+#cursor{
+  position:fixed;width:12px;height:12px;
+  background:var(--gold);border-radius:50%;
+  pointer-events:none;z-index:9999;
+  transform:translate(-50%,-50%);
+  transition:transform 0.1s,width 0.3s,height 0.3s,background 0.3s;
+  mix-blend-mode:difference;
+}
+#cursor-ring{
+  position:fixed;width:40px;height:40px;
+  border:1px solid rgba(212,168,67,0.5);border-radius:50%;
+  pointer-events:none;z-index:9998;
+  transform:translate(-50%,-50%);
+  transition:transform 0.15s ease,width 0.3s,height 0.3s,opacity 0.3s;
+}
+body:hover #cursor-ring{opacity:1;}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:1.25rem 4rem;
+  background:rgba(7,7,7,0.8);
+  backdrop-filter:blur(20px);
+  border-bottom:0.5px solid rgba(212,168,67,0.1);
+  transition:all 0.4s;
+}
+.logo{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.4rem;letter-spacing:0.15em;
+  color:var(--gold);
+}
+.logo span{color:var(--paper);opacity:0.4;}
+.nav-links{display:flex;gap:2.5rem;list-style:none;}
+.nav-links a{
+  color:rgba(242,237,228,0.45);text-decoration:none;
+  font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;
+  font-weight:400;transition:color 0.3s;position:relative;
+}
+.nav-links a::after{
+  content:'';position:absolute;bottom:-4px;left:0;width:0;height:0.5px;
+  background:var(--gold);transition:width 0.3s;
+}
+.nav-links a:hover{color:var(--gold);}
+.nav-links a:hover::after{width:100%;}
+.nav-ig{
+  font-size:0.72rem;letter-spacing:0.15em;
+  color:rgba(242,237,228,0.3);
+  border:0.5px solid rgba(212,168,67,0.2);
+  padding:0.5rem 1.2rem;transition:all 0.3s;
+  text-decoration:none;
+}
+.nav-ig:hover{border-color:var(--gold);color:var(--gold);}
+
+/* PAGE SYSTEM */
+.page{display:none;min-height:100vh;}
+.page.active{display:block;}
+
+/* ===================== HOME PAGE ===================== */
+#home{display:block;}
+
+/* LOADING SCREEN */
+#loader{
+  position:fixed;inset:0;z-index:1000;
+  background:var(--ink);
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:2rem;
+  transition:opacity 0.8s,visibility 0.8s;
+}
+.loader-text{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:5rem;letter-spacing:0.1em;
+  color:var(--gold);
+  animation:loaderPulse 1.5s ease-in-out infinite;
+}
+.loader-bar-wrap{width:200px;height:1px;background:rgba(212,168,67,0.2);}
+.loader-bar{height:1px;background:var(--gold);width:0;animation:loadFill 2s ease forwards;}
+@keyframes loaderPulse{0%,100%{opacity:0.3}50%{opacity:1}}
+@keyframes loadFill{to{width:100%}}
+#loader.hidden{opacity:0;visibility:hidden;}
+
+/* HERO */
+.hero{
+  min-height:100vh;
+  display:grid;grid-template-columns:55% 45%;
+  padding-top:80px;overflow:hidden;position:relative;
+}
+.hero-bg-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(212,168,67,0.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(212,168,67,0.04) 1px,transparent 1px);
+  background-size:60px 60px;
+  animation:gridMove 20s linear infinite;
+}
+@keyframes gridMove{from{background-position:0 0}to{background-position:60px 60px}}
+
+.hero-left{
+  display:flex;flex-direction:column;justify-content:center;
+  padding:6rem 3rem 6rem 4rem;position:relative;z-index:1;
+}
+.hero-eyebrow{
+  font-size:0.68rem;letter-spacing:0.35em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:2rem;
+  display:flex;align-items:center;gap:1rem;
+  animation:fadeUp 1s 2.2s both;
+}
+.hero-eyebrow::before{content:'';width:2.5rem;height:0.5px;background:var(--gold);}
+.hero-h1{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(4.5rem,8.5vw,8rem);
+  line-height:0.88;letter-spacing:0.03em;
+  margin-bottom:2rem;
+  animation:fadeUp 1s 2.4s both;
+}
+.hero-h1 .line2{
+  -webkit-text-stroke:1px rgba(212,168,67,0.5);
+  color:transparent;display:block;
+}
+.hero-h1 .line3{color:var(--gold);}
+.hero-sub{
+  font-size:0.9rem;line-height:1.9;
+  color:rgba(242,237,228,0.45);max-width:380px;
+  margin-bottom:3rem;
+  animation:fadeUp 1s 2.6s both;
+}
+.hero-actions{
+  display:flex;gap:1rem;flex-wrap:wrap;
+  animation:fadeUp 1s 2.8s both;
+}
+.btn-gold{
+  padding:1rem 2.8rem;background:var(--gold);color:var(--ink);
+  font-size:0.72rem;letter-spacing:0.22em;text-transform:uppercase;
+  border:none;cursor:none;font-weight:500;font-family:'Syne',sans-serif;
+  transition:all 0.3s;position:relative;overflow:hidden;
+}
+.btn-gold::after{
+  content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;
+  background:rgba(255,255,255,0.2);transition:left 0.4s;
+}
+.btn-gold:hover::after{left:100%;}
+.btn-ghost{
+  padding:1rem 2.8rem;background:transparent;color:var(--paper);
+  font-size:0.72rem;letter-spacing:0.22em;text-transform:uppercase;
+  border:0.5px solid rgba(242,237,228,0.25);cursor:none;
+  font-family:'Syne',sans-serif;transition:all 0.3s;
+}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold);}
+
+.hero-right{
+  position:relative;overflow:hidden;background:var(--dim);
+  animation:heroRight 1.2s 1.8s both;
+}
+@keyframes heroRight{from{transform:translateX(60px);opacity:0}to{transform:translateX(0);opacity:1}}
+
+.hero-right-inner{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;}
+/* Cinematic frame composition */
+.cine-frame{
+  position:absolute;inset:2.5rem;
+  border:0.5px solid rgba(212,168,67,0.15);
+}
+.cf-tl,.cf-tr,.cf-bl,.cf-br{position:absolute;width:24px;height:24px;}
+.cf-tl{top:-1px;left:-1px;border-top:2px solid var(--gold);border-left:2px solid var(--gold);}
+.cf-tr{top:-1px;right:-1px;border-top:2px solid var(--gold);border-right:2px solid var(--gold);}
+.cf-bl{bottom:-1px;left:-1px;border-bottom:2px solid var(--gold);border-left:2px solid var(--gold);}
+.cf-br{bottom:-1px;right:-1px;border-bottom:2px solid var(--gold);border-right:2px solid var(--gold);}
+
+/* Rotating lens */
+.lens-system{
+  width:260px;height:260px;position:relative;
+  display:flex;align-items:center;justify-content:center;
+}
+.lens-orbit{
+  position:absolute;border-radius:50%;
+  border:1px solid rgba(212,168,67,0.15);
+}
+.lens-orbit.o1{width:260px;height:260px;border-style:dashed;animation:orb 30s linear infinite;}
+.lens-orbit.o2{width:200px;height:200px;animation:orb 20s linear infinite reverse;}
+.lens-orbit.o3{width:140px;height:140px;border-color:rgba(212,168,67,0.4);animation:orb 12s linear infinite;}
+.lens-orbit.o4{width:80px;height:80px;border-color:rgba(212,168,67,0.7);animation:orb 8s linear infinite reverse;}
+.lens-dot{width:16px;height:16px;background:var(--gold);border-radius:50%;position:absolute;top:0;left:50%;transform:translateX(-50%);}
+.lens-center{
+  width:36px;height:36px;background:var(--gold);border-radius:50%;
+  box-shadow:0 0 60px rgba(212,168,67,0.4);
+  z-index:1;
+}
+.lens-crosshair{position:absolute;inset:0;}
+.lens-crosshair::before{content:'';position:absolute;top:50%;left:2.5rem;right:2.5rem;height:0.5px;background:rgba(212,168,67,0.15);}
+.lens-crosshair::after{content:'';position:absolute;left:50%;top:2.5rem;bottom:2.5rem;width:0.5px;background:rgba(212,168,67,0.15);}
+@keyframes orb{to{transform:rotate(360deg)}}
+
+/* ISO/f-stop HUD */
+.hud{position:absolute;font-size:0.6rem;letter-spacing:0.2em;color:rgba(212,168,67,0.5);font-family:'Syne',sans-serif;}
+.hud.h-tl{top:3rem;left:3rem;}
+.hud.h-tr{top:3rem;right:3rem;text-align:right;}
+.hud.h-bl{bottom:3rem;left:3rem;}
+.hud.h-br{bottom:3rem;right:3rem;text-align:right;}
+
+/* filmstrip bottom */
+.filmstrip-h{
+  position:absolute;bottom:0;left:0;right:0;height:70px;
+  border-top:0.5px solid rgba(212,168,67,0.12);
+  display:flex;overflow:hidden;
+}
+.fs-frame{
+  flex:1;border-right:0.5px solid rgba(212,168,67,0.08);
+  position:relative;background:rgba(212,168,67,0.02);
+}
+.fs-frame::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:8px;
+  display:flex;background:repeating-linear-gradient(90deg,transparent,transparent 6px,rgba(212,168,67,0.15) 6px,rgba(212,168,67,0.15) 10px);
+}
+.fs-frame::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:8px;
+  background:repeating-linear-gradient(90deg,transparent,transparent 6px,rgba(212,168,67,0.15) 6px,rgba(212,168,67,0.15) 10px);
+}
+
+/* SCROLL HINT */
+.scroll-hint{
+  position:absolute;bottom:3rem;left:4rem;
+  display:flex;align-items:center;gap:1rem;
+  font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;
+  color:rgba(242,237,228,0.25);z-index:1;
+  animation:fadeUp 1s 3s both;
+}
+.scroll-line{width:3rem;height:0.5px;background:rgba(212,168,67,0.3);position:relative;overflow:hidden;}
+.scroll-line::after{
+  content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;
+  background:var(--gold);animation:scrollAnim 2s ease-in-out infinite;
+}
+@keyframes scrollAnim{to{left:100%}}
+
+/* STATS */
+.stats{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  border-top:0.5px solid rgba(212,168,67,0.1);
+  border-bottom:0.5px solid rgba(212,168,67,0.1);
+}
+.stat{
+  padding:3rem;border-right:0.5px solid rgba(212,168,67,0.1);
+  position:relative;overflow:hidden;
+}
+.stat:last-child{border-right:none;}
+.stat::before{
+  content:'';position:absolute;bottom:0;left:0;width:0;height:2px;
+  background:var(--gold);transition:width 0.6s;
+}
+.stat:hover::before{width:100%;}
+.stat-n{
+  font-family:'Bebas Neue',sans-serif;font-size:3.5rem;
+  color:var(--gold);letter-spacing:0.05em;line-height:1;
+  display:flex;align-items:baseline;gap:0.25rem;
+}
+.stat-unit{font-size:1.5rem;}
+.stat-l{
+  font-size:0.65rem;letter-spacing:0.22em;text-transform:uppercase;
+  color:rgba(242,237,228,0.35);margin-top:0.5rem;
+}
+
+/* MARQUEE */
+.marquee-wrap{
+  overflow:hidden;padding:1.2rem 0;
+  border-bottom:0.5px solid rgba(212,168,67,0.1);
+}
+.marquee-track{
+  display:flex;gap:3rem;
+  animation:marqueeAnim 22s linear infinite;
+  width:max-content;
+}
+.marquee-track:hover{animation-play-state:paused;}
+.m-item{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.2rem;letter-spacing:0.18em;
+  color:rgba(212,168,67,0.28);white-space:nowrap;
+}
+.m-sep{color:var(--gold);font-size:0.6rem;}
+@keyframes marqueeAnim{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* SHOWREEL SECTION */
+.showreel-section{padding:8rem 4rem;position:relative;}
+.sec-label{
+  font-size:0.65rem;letter-spacing:0.35em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:1.5rem;
+  display:flex;align-items:center;gap:1rem;
+}
+.sec-label::before{content:'';width:1.5rem;height:0.5px;background:var(--gold);}
+.sec-h2{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(3rem,5vw,5rem);
+  letter-spacing:0.04em;line-height:0.95;
+  margin-bottom:1.5rem;
+}
+.sec-h2 .ghost{
+  -webkit-text-stroke:1px rgba(242,237,228,0.15);
+  color:transparent;
+}
+.sec-divider{width:3rem;height:1px;background:var(--gold);margin:1.5rem 0 3rem;}
+
+/* VIDEO PLAYER MOCKUP */
+.showreel-player{
+  position:relative;background:var(--mid);
+  aspect-ratio:16/9;overflow:hidden;
+  border:0.5px solid rgba(212,168,67,0.15);
+  margin-top:3rem;
+}
+.player-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(7,7,7,0.7) 0%,rgba(7,7,7,0.3) 50%,rgba(7,7,7,0.5) 100%);
+  display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1.5rem;
+  transition:background 0.4s;
+}
+.player-overlay:hover{background:rgba(7,7,7,0.4);}
+.play-btn{
+  width:80px;height:80px;
+  border:1.5px solid var(--gold);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  cursor:none;transition:all 0.3s;background:rgba(7,7,7,0.5);
+}
+.play-btn:hover{background:var(--gold);transform:scale(1.1);}
+.play-btn svg{width:28px;height:28px;fill:var(--gold);margin-left:4px;transition:fill 0.3s;}
+.play-btn:hover svg{fill:var(--ink);}
+.play-label{
+  font-size:0.7rem;letter-spacing:0.25em;text-transform:uppercase;
+  color:rgba(242,237,228,0.5);
+}
+.player-bg{
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,#0d0a05,#1a1205,#0a0d15);
+}
+.player-waveform{
+  position:absolute;bottom:4rem;left:0;right:0;
+  display:flex;align-items:center;justify-content:center;gap:3px;height:40px;
+}
+.wf-bar{
+  width:3px;background:rgba(212,168,67,0.2);border-radius:2px;
+  animation:wfAnim 1.5s ease-in-out infinite;
+}
+.player-timecode{
+  position:absolute;top:2rem;left:2rem;
+  font-size:0.7rem;letter-spacing:0.2em;color:rgba(212,168,67,0.4);
+}
+.player-title-overlay{
+  position:absolute;bottom:2rem;left:2rem;right:2rem;
+  font-family:'Bebas Neue',sans-serif;font-size:1.8rem;
+  letter-spacing:0.08em;color:rgba(242,237,228,0.15);
+}
+@keyframes wfAnim{0%,100%{height:8px}50%{height:36px}}
+
+/* BEFORE/AFTER SECTION */
+.ba-section{padding:8rem 4rem;background:var(--dim);}
+.ba-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:4rem;}
+.ba-item{position:relative;overflow:hidden;aspect-ratio:4/3;}
+.ba-slider-wrap{
+  position:relative;width:100%;height:100%;
+  user-select:none;overflow:hidden;
+}
+.ba-after,.ba-before{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+}
+.ba-before{
+  background:linear-gradient(135deg,#2a1a0a,#1a1205);
+  font-family:'Bebas Neue',sans-serif;font-size:3rem;
+  color:rgba(242,237,228,0.08);letter-spacing:0.1em;
+}
+.ba-after{
+  background:linear-gradient(135deg,#050e1a,#0a0e20);
+  clip-path:inset(0 50% 0 0);
+  transition:clip-path 0s;
+}
+.ba-after.editing{background:linear-gradient(135deg,#0d1a2a,#1a0d05);}
+.ba-handle{
+  position:absolute;top:0;bottom:0;
+  width:2px;background:var(--gold);
+  left:50%;transform:translateX(-50%);
+  cursor:ew-resize;z-index:10;
+  transition:left 0s;
+}
+.ba-handle::before{
+  content:'◀ ▶';
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  width:36px;height:36px;background:var(--gold);
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:0.5rem;color:var(--ink);letter-spacing:-0.05em;
+  box-shadow:0 0 20px rgba(212,168,67,0.4);
+  white-space:nowrap;padding:0 6px;font-weight:700;
+}
+.ba-labels{
+  position:absolute;bottom:1rem;left:0;right:0;
+  display:flex;justify-content:space-between;padding:0 1rem;
+  z-index:5;pointer-events:none;
+}
+.ba-l,.ba-r{
+  font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;
+  padding:0.25rem 0.6rem;border:0.5px solid;
+}
+.ba-l{color:rgba(242,237,228,0.5);border-color:rgba(242,237,228,0.2);background:rgba(7,7,7,0.6);}
+.ba-r{color:var(--gold);border-color:rgba(212,168,67,0.4);background:rgba(7,7,7,0.6);}
+.ba-placeholder-txt{
+  font-family:'Bebas Neue',sans-serif;font-size:2.5rem;
+  color:rgba(242,237,228,0.06);letter-spacing:0.1em;
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+}
+.ba-after .ba-placeholder-txt{color:rgba(212,168,67,0.12);}
+.ba-tag{
+  position:absolute;top:1rem;left:1rem;
+  font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;
+  padding:0.3rem 0.7rem;background:rgba(7,7,7,0.8);
+  border:0.5px solid rgba(212,168,67,0.25);color:rgba(212,168,67,0.7);
+  z-index:5;
+}
+
+/* SERVICES SECTION */
+.services-section{padding:8rem 4rem;}
+.services-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:0;border-top:0.5px solid rgba(212,168,67,0.1);
+  border-left:0.5px solid rgba(212,168,67,0.1);
+  margin-top:4rem;
+}
+.svc-card{
+  padding:3rem 2.5rem;
+  border-bottom:0.5px solid rgba(212,168,67,0.1);
+  border-right:0.5px solid rgba(212,168,67,0.1);
+  position:relative;overflow:hidden;
+  transition:background 0.4s;
+}
+.svc-card::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 0% 100%,rgba(212,168,67,0.06) 0%,transparent 60%);
+  opacity:0;transition:opacity 0.4s;
+}
+.svc-card:hover::before{opacity:1;}
+.svc-n{
+  font-family:'Bebas Neue',sans-serif;font-size:5rem;
+  position:absolute;top:1rem;right:1.5rem;
+  color:rgba(212,168,67,0.05);line-height:1;
+}
+.svc-icon{font-size:1.8rem;margin-bottom:1.5rem;display:block;}
+.svc-name{
+  font-family:'Bebas Neue',sans-serif;font-size:1.7rem;
+  letter-spacing:0.06em;margin-bottom:1rem;
+}
+.svc-desc{font-size:0.82rem;line-height:1.8;color:rgba(242,237,228,0.4);}
+.svc-tools{
+  display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:1.5rem;
+}
+.tool-tag{
+  font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;
+  padding:0.25rem 0.6rem;
+  border:0.5px solid rgba(212,168,67,0.2);
+  color:rgba(212,168,67,0.6);
+}
+
+/* WORK GRID */
+.work-section{padding:0 4rem 8rem;}
+.work-grid{
+  display:grid;
+  grid-template-columns:repeat(12,1fr);
+  grid-template-rows:auto;
+  gap:4px;
+  margin-top:4rem;
+}
+.w-item{
+  position:relative;overflow:hidden;
+  background:var(--dim);cursor:none;
+}
+.w-item.w-large{grid-column:span 7;grid-row:span 2;min-height:420px;}
+.w-item.w-med{grid-column:span 5;min-height:200px;}
+.w-item.w-wide{grid-column:span 12;min-height:180px;}
+.w-item.w-third{grid-column:span 4;min-height:240px;}
+.w-bg{
+  position:absolute;inset:0;
+  transition:transform 0.7s cubic-bezier(0.25,0.46,0.45,0.94);
+}
+.w-item:hover .w-bg{transform:scale(1.05);}
+.w-bg-1{background:linear-gradient(135deg,#1a1209 0%,#2a1f08 50%,#0d0a03 100%);}
+.w-bg-2{background:linear-gradient(135deg,#080d1a 0%,#0d1525 100%);}
+.w-bg-3{background:linear-gradient(135deg,#120808 0%,#1e0d0d 100%);}
+.w-bg-4{background:linear-gradient(135deg,#080f12 0%,#0a1a1e 100%);}
+.w-bg-5{background:linear-gradient(135deg,#10080f 0%,#1a0d18 100%);}
+.w-bg-6{background:linear-gradient(135deg,#0f120a 0%,#1a1f0d 100%);}
+.w-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(7,7,7,0.95) 0%,rgba(7,7,7,0.2) 50%,transparent 100%);
+  display:flex;flex-direction:column;justify-content:flex-end;
+  padding:2rem;
+  opacity:0;transform:translateY(10px);
+  transition:all 0.4s;
+}
+.w-item:hover .w-overlay{opacity:1;transform:translateY(0);}
+.w-cat{
+  font-size:0.6rem;letter-spacing:0.25em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:0.5rem;
+}
+.w-title{
+  font-family:'Bebas Neue',sans-serif;font-size:1.6rem;
+  letter-spacing:0.06em;line-height:1.1;
+}
+.w-placeholder{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-family:'Bebas Neue',sans-serif;font-size:4rem;
+  color:rgba(212,168,67,0.05);letter-spacing:0.1em;
+}
+.w-add-note{
+  font-size:0.6rem;letter-spacing:0.15em;color:rgba(242,237,228,0.15);
+  text-align:center;position:absolute;bottom:1rem;left:0;right:0;
+}
+
+/* PROCESS */
+.process-section{
+  padding:8rem 4rem;background:var(--mid);
+  position:relative;overflow:hidden;
+}
+.process-bg-text{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  font-family:'Bebas Neue',sans-serif;font-size:20vw;
+  color:rgba(212,168,67,0.02);white-space:nowrap;letter-spacing:0.05em;
+  pointer-events:none;
+}
+.process-steps{
+  display:grid;grid-template-columns:repeat(5,1fr);
+  gap:0;margin-top:4rem;position:relative;z-index:1;
+}
+.p-step{
+  padding:2.5rem 2rem;
+  border-right:0.5px solid rgba(212,168,67,0.1);
+  position:relative;
+}
+.p-step:last-child{border-right:none;}
+.p-num{
+  font-family:'Bebas Neue',sans-serif;font-size:4rem;
+  color:rgba(212,168,67,0.1);line-height:1;margin-bottom:1rem;
+}
+.p-name{
+  font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:0.75rem;
+}
+.p-desc{font-size:0.78rem;line-height:1.75;color:rgba(242,237,228,0.38);}
+.p-arrow{
+  position:absolute;top:3rem;right:-1px;
+  width:20px;height:1px;background:var(--gold);
+  z-index:2;
+}
+.p-arrow::after{
+  content:'';position:absolute;right:0;top:-3px;
+  border-left:6px solid var(--gold);
+  border-top:3px solid transparent;
+  border-bottom:3px solid transparent;
+}
+.p-step:last-child .p-arrow{display:none;}
+
+/* TOOLS BELT */
+.tools-section{padding:6rem 4rem;}
+.tools-grid{
+  display:flex;flex-wrap:wrap;gap:0;
+  margin-top:3rem;
+  border:0.5px solid rgba(212,168,67,0.1);
+}
+.tool-item{
+  padding:2rem 2.5rem;
+  border-right:0.5px solid rgba(212,168,67,0.1);
+  border-bottom:0.5px solid rgba(212,168,67,0.1);
+  flex:1;min-width:180px;
+  display:flex;flex-direction:column;gap:0.5rem;
+  transition:background 0.3s;position:relative;overflow:hidden;
+}
+.tool-item::before{
+  content:'';position:absolute;bottom:0;left:0;width:0;height:1px;
+  background:var(--gold);transition:width 0.5s;
+}
+.tool-item:hover::before{width:100%;}
+.tool-item:hover{background:rgba(212,168,67,0.03);}
+.tool-name{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:0.06em;}
+.tool-cat{font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(212,168,67,0.5);}
+.tool-level-bar{width:100%;height:1px;background:rgba(242,237,228,0.08);margin-top:0.5rem;position:relative;}
+.tool-level-fill{height:1px;background:var(--gold);transition:width 1s ease;}
+
+/* TESTIMONIALS */
+.testi-section{padding:8rem 4rem;background:var(--dim);}
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:4rem;}
+.testi-card{
+  padding:3rem;border:0.5px solid rgba(212,168,67,0.1);
+  position:relative;transition:border-color 0.4s;
+}
+.testi-card:hover{border-color:rgba(212,168,67,0.3);}
+.testi-quote{
+  font-family:'Bebas Neue',sans-serif;font-size:4rem;
+  color:var(--gold);opacity:0.15;line-height:0.8;margin-bottom:1rem;
+}
+.testi-text{font-size:0.85rem;line-height:1.8;color:rgba(242,237,228,0.5);margin-bottom:2rem;}
+.testi-author{font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);}
+.testi-role{font-size:0.65rem;color:rgba(242,237,228,0.3);margin-top:0.25rem;}
+.testi-stars{color:var(--gold);font-size:0.7rem;margin-bottom:1rem;}
+
+/* CONTACT */
+.contact-section{
+  padding:8rem 4rem;
+  display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center;
+  border-top:0.5px solid rgba(212,168,67,0.1);
+}
+.contact-big{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(3.5rem,6vw,6rem);
+  line-height:0.9;letter-spacing:0.03em;
+}
+.contact-big .g{color:var(--gold);}
+.contact-ig{
+  margin-top:2rem;display:inline-flex;align-items:center;gap:1rem;
+  font-size:0.75rem;letter-spacing:0.15em;
+  border:0.5px solid rgba(212,168,67,0.2);
+  padding:0.8rem 1.5rem;color:rgba(212,168,67,0.7);
+  text-decoration:none;transition:all 0.3s;
+}
+.contact-ig:hover{border-color:var(--gold);color:var(--gold);}
+.contact-form{display:flex;flex-direction:column;gap:2rem;}
+.f-field{display:flex;flex-direction:column;gap:0.5rem;}
+.f-label{font-size:0.6rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(242,237,228,0.3);}
+.f-input{
+  background:transparent;border:none;
+  border-bottom:0.5px solid rgba(212,168,67,0.2);
+  padding:0.8rem 0;color:var(--paper);
+  font-family:'Syne',sans-serif;font-size:0.9rem;
+  outline:none;transition:border-color 0.3s;
+}
+.f-input:focus{border-bottom-color:var(--gold);}
+.f-input::placeholder{color:rgba(242,237,228,0.15);}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:2rem;}
+
+/* FOOTER */
+footer{
+  border-top:0.5px solid rgba(212,168,67,0.1);
+  padding:2rem 4rem;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.ft-left{font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(242,237,228,0.2);}
+.ft-right{display:flex;gap:2rem;}
+.ft-right a{
+  font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;
+  color:rgba(242,237,228,0.25);text-decoration:none;transition:color 0.3s;
+}
+.ft-right a:hover{color:var(--gold);}
+
+/* SCROLL REVEAL */
+.reveal{opacity:0;transform:translateY(40px);transition:all 0.8s cubic-bezier(0.25,0.46,0.45,0.94);}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.reveal-left{opacity:0;transform:translateX(-40px);transition:all 0.8s cubic-bezier(0.25,0.46,0.45,0.94);}
+.reveal-left.visible{opacity:1;transform:translateX(0);}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes wfAnim{0%,100%{height:4px}50%{height:36px}}
+
+/* MOBILE FIXES */
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr;}
+  .hero-right{display:none;}
+  nav{padding:1.25rem 1.5rem;}
+  .nav-links{display:none;}
+  .hero-left{padding:6rem 1.5rem 4rem;}
+  .stats{grid-template-columns:1fr 1fr;}
+  .services-grid{grid-template-columns:1fr;}
+  .ba-grid{grid-template-columns:1fr;}
+  .testi-grid{grid-template-columns:1fr;}
+  .contact-section{grid-template-columns:1fr;gap:3rem;}
+  .process-steps{grid-template-columns:1fr 1fr;}
+  .work-grid{grid-template-columns:1fr;}
+  .w-item.w-large,.w-item.w-med,.w-item.w-wide,.w-item.w-third{grid-column:span 1;}
+}
+</style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-text">PEV</div>
+  <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
+  <div style="font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;color:rgba(212,168,67,0.4);">Loading Portfolio</div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">PEV<span>ibes</span></div>
+  <ul class="nav-links">
+    <li><a href="#showreel" onclick="scrollTo('#showreel')">Showreel</a></li>
+    <li><a href="#before-after" onclick="scrollTo('#before-after')">Before/After</a></li>
+    <li><a href="#work">Work</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a class="nav-ig" href="https://instagram.com/photoediting_vibes" target="_blank">@photoediting_vibes ↗</a>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="home">
+  <div class="hero-bg-grid"></div>
+  <div class="hero-left">
+    <div class="hero-eyebrow">Photo · Video · AI Editing · 54K+ Community</div>
+    <h1 class="hero-h1">
+      VISUAL<br>
+      <span class="line2">EDITING</span><br>
+      <span class="line3">VIBES.</span>
+    </h1>
+    <p class="hero-sub">
+      Lightroom mastery, cinematic color grades, AI-powered edits — turning raw shots into scroll-stopping visuals. Based in India. Working worldwide.
+    </p>
+    <div class="hero-actions">
+      <button class="btn-gold" onclick="document.getElementById('showreel').scrollIntoView({behavior:'smooth'})">Watch Showreel ▶</button>
+      <button class="btn-ghost" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get Quote</button>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-right-inner">
+      <div class="cine-frame">
+        <div class="cf-tl"></div><div class="cf-tr"></div>
+        <div class="cf-bl"></div><div class="cf-br"></div>
+      </div>
+      <div class="lens-crosshair"></div>
+      <div class="lens-system">
+        <div class="lens-orbit o1"><div class="lens-dot"></div></div>
+        <div class="lens-orbit o2"></div>
+        <div class="lens-orbit o3"></div>
+        <div class="lens-orbit o4"></div>
+        <div class="lens-center"></div>
+      </div>
+      <div class="hud h-tl">f/1.8<br>ISO 800<br>1/250s</div>
+      <div class="hud h-tr">4K · 60fps<br>RAW+JPEG<br>ProRes</div>
+      <div class="hud h-bl">LUT: TEAL-ORANGE<br>Grade: Cinematic</div>
+      <div class="hud h-br">Lightroom<br>Premiere Pro<br>After Effects</div>
+    </div>
+    <div class="filmstrip-h">
+      <div class="fs-frame"></div><div class="fs-frame"></div><div class="fs-frame"></div>
+      <div class="fs-frame"></div><div class="fs-frame"></div><div class="fs-frame"></div>
+      <div class="fs-frame"></div><div class="fs-frame"></div>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    Scroll to explore
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat reveal">
+    <div class="stat-n"><span class="counter" data-target="54">0</span><span class="stat-unit">K+</span></div>
+    <div class="stat-l">Instagram Followers</div>
+  </div>
+  <div class="stat reveal" style="transition-delay:0.1s">
+    <div class="stat-n"><span class="counter" data-target="148">0</span><span class="stat-unit">+</span></div>
+    <div class="stat-l">Projects Delivered</div>
+  </div>
+  <div class="stat reveal" style="transition-delay:0.2s">
+    <div class="stat-n"><span class="counter" data-target="5">0</span><span class="stat-unit">+</span></div>
+    <div class="stat-l">Years Experience</div>
+  </div>
+  <div class="stat reveal" style="transition-delay:0.3s">
+    <div class="stat-n"><span class="counter" data-target="100">0</span><span class="stat-unit">%</span></div>
+    <div class="stat-l">Client Satisfaction</div>
+  </div>
+</div>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span class="m-item">Lightroom Editing</span><span class="m-sep">✦</span>
+    <span class="m-item">AI Photo Editing</span><span class="m-sep">✦</span>
+    <span class="m-item">Color Grading</span><span class="m-sep">✦</span>
+    <span class="m-item">Video Editing</span><span class="m-sep">✦</span>
+    <span class="m-item">Cinematic LUTs</span><span class="m-sep">✦</span>
+    <span class="m-item">Photo Retouching</span><span class="m-sep">✦</span>
+    <span class="m-item">Motion Graphics</span><span class="m-sep">✦</span>
+    <span class="m-item">Reels & Shorts</span><span class="m-sep">✦</span>
+    <span class="m-item">Brand Content</span><span class="m-sep">✦</span>
+    <!-- Duplicate for seamless loop -->
+    <span class="m-item">Lightroom Editing</span><span class="m-sep">✦</span>
+    <span class="m-item">AI Photo Editing</span><span class="m-sep">✦</span>
+    <span class="m-item">Color Grading</span><span class="m-sep">✦</span>
+    <span class="m-item">Video Editing</span><span class="m-sep">✦</span>
+    <span class="m-item">Cinematic LUTs</span><span class="m-sep">✦</span>
+    <span class="m-item">Photo Retouching</span><span class="m-sep">✦</span>
+    <span class="m-item">Motion Graphics</span><span class="m-sep">✦</span>
+    <span class="m-item">Reels & Shorts</span><span class="m-sep">✦</span>
+    <span class="m-item">Brand Content</span><span class="m-sep">✦</span>
+  </div>
+</div>
+
+<!-- ===== SHOWREEL ===== -->
+<section class="showreel-section" id="showreel">
+  <div class="reveal">
+    <div class="sec-label">01 — Showreel</div>
+    <h2 class="sec-h2">WATCH THE<br><span class="ghost">MAGIC</span> HAPPEN</h2>
+    <div class="sec-divider"></div>
+    <p style="font-size:0.88rem;line-height:1.9;color:rgba(242,237,228,0.4);max-width:480px;">
+      A curated reel of my best photo and video edits — Lightroom transformations, cinematic color grades, AI-powered retouching, and motion work.
+    </p>
+  </div>
+  <div class="showreel-player reveal" style="transition-delay:0.2s">
+    <div class="player-bg"></div>
+    <div class="player-timecode">00:00:00:00 • 4K • 60fps</div>
+    <div class="player-title-overlay">PHOTOEDITING VIBES — 2025 SHOWREEL</div>
+    <div class="player-waveform" id="waveform"></div>
+    <div class="player-overlay" id="playerOverlay">
+      <div class="play-btn" id="playBtn">
+        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+      <div class="play-label">Click to Play Showreel</div>
+    </div>
+  </div>
+  <p style="margin-top:1.5rem;font-size:0.68rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(242,237,228,0.2);">
+    → Replace with your actual YouTube/Vimeo embed URL in the final file
+  </p>
+</section>
+
+<!-- ===== BEFORE / AFTER ===== -->
+<section class="ba-section" id="before-after">
+  <div class="reveal">
+    <div class="sec-label">02 — Transformations</div>
+    <h2 class="sec-h2">BEFORE <span class="ghost">vs</span><br>AFTER</h2>
+    <div class="sec-divider"></div>
+    <p style="font-size:0.88rem;line-height:1.9;color:rgba(242,237,228,0.4);max-width:480px;">
+      Drag the slider to see the raw shot vs the finished edit. This is the craft — every pixel deliberate.
+    </p>
+  </div>
+
+  <div class="ba-grid">
+    <!-- BA Item 1 -->
+    <div class="ba-item reveal" style="transition-delay:0.1s">
+      <div class="ba-tag">Portrait Retouch</div>
+      <div class="ba-slider-wrap" data-slider>
+        <div class="ba-before">
+          <div class="ba-placeholder-txt">RAW</div>
+        </div>
+        <div class="ba-after">
+          <div class="ba-placeholder-txt">EDITED</div>
+        </div>
+        <div class="ba-handle"></div>
+        <div class="ba-labels">
+          <div class="ba-l">Before</div>
+          <div class="ba-r">After</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BA Item 2 -->
+    <div class="ba-item reveal" style="transition-delay:0.2s">
+      <div class="ba-tag">Cinematic Color Grade</div>
+      <div class="ba-slider-wrap" data-slider>
+        <div class="ba-before" style="background:linear-gradient(135deg,#1a1a0a,#252510);">
+          <div class="ba-placeholder-txt">RAW</div>
+        </div>
+        <div class="ba-after editing">
+          <div class="ba-placeholder-txt">EDITED</div>
+        </div>
+        <div class="ba-handle"></div>
+        <div class="ba-labels">
+          <div class="ba-l">Before</div>
+          <div class="ba-r">After</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BA Item 3 -->
+    <div class="ba-item reveal" style="transition-delay:0.3s">
+      <div class="ba-tag">Lightroom Preset</div>
+      <div class="ba-slider-wrap" data-slider>
+        <div class="ba-before" style="background:linear-gradient(135deg,#141414,#1e1e1e);">
+          <div class="ba-placeholder-txt">RAW</div>
+        </div>
+        <div class="ba-after" style="background:linear-gradient(135deg,#1a2a0d,#0d1a1a);">
+          <div class="ba-placeholder-txt">EDITED</div>
+        </div>
+        <div class="ba-handle"></div>
+        <div class="ba-labels">
+          <div class="ba-l">Before</div>
+          <div class="ba-r">After</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BA Item 4 -->
+    <div class="ba-item reveal" style="transition-delay:0.4s">
+      <div class="ba-tag">AI Retouch + Grade</div>
+      <div class="ba-slider-wrap" data-slider>
+        <div class="ba-before" style="background:linear-gradient(135deg,#0f0f0f,#1a1a1a);">
+          <div class="ba-placeholder-txt">RAW</div>
+        </div>
+        <div class="ba-after" style="background:linear-gradient(135deg,#1a0a1a,#0a101a);">
+          <div class="ba-placeholder-txt">EDITED</div>
+        </div>
+        <div class="ba-handle"></div>
+        <div class="ba-labels">
+          <div class="ba-l">Before</div>
+          <div class="ba-r">After</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p style="margin-top:2rem;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(242,237,228,0.15);text-align:center;">
+    → Replace placeholder backgrounds with your actual before/after images using CSS background-image
+  </p>
+</section>
+
+<!-- ===== SERVICES ===== -->
+<section class="services-section" id="services">
+  <div class="reveal">
+    <div class="sec-label">03 — Services</div>
+    <h2 class="sec-h2">WHAT I<br><span class="ghost">OFFER</span></h2>
+    <div class="sec-divider"></div>
+  </div>
+  <div class="services-grid">
+    <div class="svc-card reveal"><span class="svc-n">01</span><span class="svc-icon">📷</span><div class="svc-name">Lightroom Editing</div><p class="svc-desc">Custom preset creation, batch editing, exposure correction, color harmony and skin tone perfection for portraits and landscapes.</p><div class="svc-tools"><span class="tool-tag">Lightroom</span><span class="tool-tag">Presets</span><span class="tool-tag">RAW</span></div></div>
+    <div class="svc-card reveal" style="transition-delay:0.1s"><span class="svc-n">02</span><span class="svc-icon">🤖</span><div class="svc-name">AI Photo Editing</div><p class="svc-desc">AI-powered sky replacement, object removal, background generation, skin smoothing and scene enhancement at scale.</p><div class="svc-tools"><span class="tool-tag">Firefly</span><span class="tool-tag">Luminar Neo</span><span class="tool-tag">Topaz</span></div></div>
+    <div class="svc-card reveal" style="transition-delay:0.2s"><span class="svc-n">03</span><span class="svc-icon">🎬</span><div class="svc-name">Video Editing</div><p class="svc-desc">Reels, YouTube videos, wedding films and brand content. Tight pacing, music sync, transitions and cinematic storytelling.</p><div class="svc-tools"><span class="tool-tag">Premiere Pro</span><span class="tool-tag">DaVinci</span><span class="tool-tag">Final Cut</span></div></div>
+    <div class="svc-card reveal" style="transition-delay:0.1s"><span class="svc-n">04</span><span class="svc-icon">🎨</span><div class="svc-name">Color Grading</div><p class="svc-desc">Cinematic LUT design, teal-orange grades, mood-driven color stories. Your footage gets the look of a Netflix film.</p><div class="svc-tools"><span class="tool-tag">DaVinci Resolve</span><span class="tool-tag">LUTs</span></div></div>
+    <div class="svc-card reveal" style="transition-delay:0.2s"><span class="svc-n">05</span><span class="svc-icon">✦</span><div class="svc-name">Motion Graphics</div><p class="svc-desc">Animated titles, lower thirds, logo reveals, Instagram story templates and Reels graphics that demand attention.</p><div class="svc-tools"><span class="tool-tag">After Effects</span><span class="tool-tag">Motion</span></div></div>
+    <div class="svc-card reveal" style="transition-delay:0.3s"><span class="svc-n">06</span><span class="svc-icon">📲</span><div class="svc-name">Paid Promotions</div><p class="svc-desc">With 54K+ engaged followers, I offer product features, editing tutorials with your preset, and shoutout collaborations.</p><div class="svc-tools"><span class="tool-tag">Instagram</span><span class="tool-tag">Collaborations</span></div></div>
+  </div>
+</section>
+
+<!-- ===== WORK ===== -->
+<section class="work-section" id="work">
+  <div class="reveal">
+    <div class="sec-label">04 — Portfolio</div>
+    <h2 class="sec-h2">SELECTED<br><span class="ghost">WORK</span></h2>
+    <div class="sec-divider"></div>
+  </div>
+  <div class="work-grid">
+    <div class="w-item w-large reveal"><div class="w-bg w-bg-1"></div><div class="w-placeholder">01</div><div class="w-overlay"><div class="w-cat">Portrait · Lightroom</div><div class="w-title">Golden Hour Portrait Series</div></div></div>
+    <div class="w-item w-med reveal" style="transition-delay:0.1s"><div class="w-bg w-bg-2"></div><div class="w-placeholder">02</div><div class="w-overlay"><div class="w-cat">Cinematic Grade</div><div class="w-title">Teal-Orange Film Look</div></div></div>
+    <div class="w-item w-med reveal" style="transition-delay:0.2s"><div class="w-bg w-bg-3"></div><div class="w-placeholder">03</div><div class="w-overlay"><div class="w-cat">AI Edit</div><div class="w-title">Sky Replacement Series</div></div></div>
+    <div class="w-item w-third reveal" style="transition-delay:0.1s"><div class="w-bg w-bg-4"></div><div class="w-placeholder">04</div><div class="w-overlay"><div class="w-cat">Video Edit</div><div class="w-title">Wedding Reel</div></div></div>
+    <div class="w-item w-third reveal" style="transition-delay:0.2s"><div class="w-bg w-bg-5"></div><div class="w-placeholder">05</div><div class="w-overlay"><div class="w-cat">Motion</div><div class="w-title">Brand Film</div></div></div>
+    <div class="w-item w-third reveal" style="transition-delay:0.3s"><div class="w-bg w-bg-6"></div><div class="w-placeholder">06</div><div class="w-overlay"><div class="w-cat">Social</div><div class="w-title">Reels Package</div></div></div>
+  </div>
+  <p style="margin-top:2rem;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(242,237,228,0.15);text-align:center;">Add your actual work images using background-image CSS property</p>
+</section>
+
+<!-- ===== TOOLS ===== -->
+<section class="tools-section reveal">
+  <div class="sec-label">05 — Arsenal</div>
+  <h2 class="sec-h2">TOOLS I<br><span class="ghost">MASTER</span></h2>
+  <div class="sec-divider"></div>
+  <div class="tools-grid">
+    <div class="tool-item"><div class="tool-name">Lightroom</div><div class="tool-cat">Photo Editing</div><div class="tool-level-bar"><div class="tool-level-fill" data-level="98"></div></div></div>
+    <div class="tool-item"><div class="tool-name">Photoshop</div><div class="tool-cat">Retouching</div><div class="tool-level-bar"><div class="tool-level-fill" data-level="90"></div></div></div>
+    <div class="tool-item"><div class="tool-name">Premiere Pro</div><div class="tool-cat">Video Editing</div><div class="tool-level-bar"><div class="tool-level-fill" data-level="88"></div></div></div>
+    <div class="tool-item"><div class="tool-name">DaVinci Resolve</div><div class="tool-cat">Color Grading</div><div class="tool-level-bar"><div class="tool-level-fill" data-level="85"></div></div></div>
+    <div class="tool-item"><div class="tool-name">After Effects</div><div class="tool-cat">Motion Graphics</div><div class="tool-level-bar"><div class="tool-level-fill" data-level="78"></div></div></div>
+    <div class="tool-item"><div class="tool-name">AI Tools</div><div class="tool-cat">Firefly · Luminar</div><div class="tool-level-bar"><div class="tool-level-fill" data-level="92"></div></div></div>
+  </div>
+</section>
+
+<!-- ===== PROCESS ===== -->
+<section class="process-section">
+  <div class="process-bg-text">PROCESS</div>
+  <div class="reveal">
+    <div class="sec-label">06 — Workflow</div>
+    <h2 class="sec-h2">HOW IT<br><span class="ghost">WORKS</span></h2>
+    <div class="sec-divider"></div>
+  </div>
+  <div class="process-steps">
+    <div class="p-step reveal"><div class="p-arrow"></div><div class="p-num">01</div><div class="p-name">Brief</div><p class="p-desc">You share your vision, references, mood board. I understand your style goals before touching anything.</p></div>
+    <div class="p-step reveal" style="transition-delay:0.1s"><div class="p-arrow"></div><div class="p-num">02</div><div class="p-name">Review</div><p class="p-desc">I assess your raw files — photo resolution, video quality, what's workable and what needs a reshoot.</p></div>
+    <div class="p-step reveal" style="transition-delay:0.2s"><div class="p-arrow"></div><div class="p-num">03</div><div class="p-name">Edit</div><p class="p-desc">First pass delivered within the agreed timeline. Colour, grade, retouch — foundation laid precisely.</p></div>
+    <div class="p-step reveal" style="transition-delay:0.3s"><div class="p-arrow"></div><div class="p-num">04</div><div class="p-name">Revise</div><p class="p-desc">Your feedback. I refine. Up to 3 revision rounds included — because perfection is the standard.</p></div>
+    <div class="p-step reveal" style="transition-delay:0.4s"><div class="p-num">05</div><div class="p-name">Deliver</div><p class="p-desc">Final exports in all formats — web, print, social. Organised file handoff with usage notes.</p></div>
+  </div>
+</section>
+
+<!-- ===== TESTIMONIALS ===== -->
+<section class="testi-section reveal">
+  <div class="sec-label">07 — Reviews</div>
+  <h2 class="sec-h2">CLIENT<br><span class="ghost">WORDS</span></h2>
+  <div class="sec-divider"></div>
+  <div class="testi-grid">
+    <div class="testi-card"><div class="testi-quote">"</div><div class="testi-stars">★★★★★</div><p class="testi-text">The Lightroom editing completely transformed my travel photos. The tones, the mood — exactly what I wanted but couldn't express. Worth every rupee.</p><div class="testi-author">Priya Sharma</div><div class="testi-role">Travel Blogger · Mumbai</div></div>
+    <div class="testi-card"><div class="testi-quote">"</div><div class="testi-stars">★★★★★</div><p class="testi-text">Our brand video went from decent to stunning. The color grade alone changed how people perceive our product. Serious talent here.</p><div class="testi-author">Aryan Mehta</div><div class="testi-role">Founder · D2C Brand</div></div>
+    <div class="testi-card"><div class="testi-quote">"</div><div class="testi-stars">★★★★★</div><p class="testi-text">Got my wedding highlight reel and showed it 15 times in a row. The music sync, the cuts, the grade — cinematic is the only word. Thank you!</p><div class="testi-author">Rahul & Neha K.</div><div class="testi-role">Wedding Clients · Ahmedabad</div></div>
+  </div>
+  <p style="margin-top:2rem;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(242,237,228,0.15);text-align:center;">Replace with your actual client testimonials</p>
+</section>
+
+<!-- ===== CONTACT ===== -->
+<section class="contact-section" id="contact">
+  <div>
+    <div class="sec-label">08 — Let's Work</div>
+    <div class="contact-big">
+      LET'S<br>CREATE<br><span class="g">TOGETHER.</span>
+    </div>
+    <p style="margin-top:1.5rem;font-size:0.85rem;line-height:1.9;color:rgba(242,237,228,0.4);max-width:340px;">
+      DM me for paid editing, paid promotions, preset packs, and collaborations. Available worldwide, based in India.
+    </p>
+    <a class="contact-ig" href="https://instagram.com/photoediting_vibes" target="_blank">
+      📷 @photoediting_vibes ↗
+    </a>
+  </div>
+  <div class="contact-form">
+    <div class="f-row">
+      <div class="f-field"><label class="f-label">Your Name</label><input class="f-input" type="text" placeholder="John Doe"></div>
+      <div class="f-field"><label class="f-label">Email</label><input class="f-input" type="email" placeholder="you@email.com"></div>
+    </div>
+    <div class="f-field"><label class="f-label">Service Needed</label><input class="f-input" type="text" placeholder="Lightroom edit / Video / Brand collab..."></div>
+    <div class="f-field"><label class="f-label">Budget (INR / USD)</label><input class="f-input" type="text" placeholder="e.g. ₹2000 / $50"></div>
+    <div class="f-field"><label class="f-label">Project Details</label><input class="f-input" type="text" placeholder="Tell me about your project..."></div>
+    <button class="btn-gold" style="align-self:flex-start;margin-top:0.5rem;">Send Message ↗</button>
+  </div>
+</section>
+
+<footer>
+  <div class="ft-left">© 2025 @photoediting_vibes · All Rights Reserved · India</div>
+  <div class="ft-right">
+    <a href="https://instagram.com/photoediting_vibes" target="_blank">Instagram</a>
+    <a href="#">YouTube</a>
+    <a href="#">Behance</a>
+    <a href="#">LinkedIn</a>
+  </div>
+</footer>
+
+<script>
+// CURSOR
+const cursor=document.getElementById('cursor');
+const ring=document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
+function animRing(){rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);}
+animRing();
+document.querySelectorAll('button,a,.ba-handle,.play-btn').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cursor.style.width='6px';cursor.style.height='6px';ring.style.width='60px';ring.style.height='60px';});
+  el.addEventListener('mouseleave',()=>{cursor.style.width='12px';cursor.style.height='12px';ring.style.width='40px';ring.style.height='40px';});
+});
+
+// LOADER
+window.addEventListener('load',()=>{
+  setTimeout(()=>{document.getElementById('loader').classList.add('hidden');},2200);
+});
+
+// WAVEFORM
+const wf=document.getElementById('waveform');
+for(let i=0;i<40;i++){
+  const b=document.createElement('div');
+  b.className='wf-bar';
+  const h=Math.random()*30+4;
+  b.style.height=h+'px';
+  b.style.animationDelay=(Math.random()*1.5)+'s';
+  b.style.animationDuration=(0.8+Math.random()*1.2)+'s';
+  wf.appendChild(b);
+}
+
+// SCROLL REVEAL
+const revealEls=document.querySelectorAll('.reveal,.reveal-left');
+const io=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');}});
+},{threshold:0.12});
+revealEls.forEach(el=>io.observe(el));
+
+// COUNTER ANIMATION
+const counters=document.querySelectorAll('.counter');
+const cio=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const el=e.target;
+      const target=parseInt(el.dataset.target);
+      let start=0;
+      const dur=1800;
+      const step=timestamp=>{
+        if(!start)start=timestamp;
+        const progress=Math.min((timestamp-start)/dur,1);
+        el.textContent=Math.floor(progress*target);
+        if(progress<1)requestAnimationFrame(step);
+        else el.textContent=target;
+      };
+      requestAnimationFrame(step);
+      cio.unobserve(el);
+    }
+  });
+},{threshold:0.5});
+counters.forEach(c=>cio.observe(c));
+
+// TOOL LEVEL BARS
+const bars=document.querySelectorAll('.tool-level-fill');
+bars.forEach(b=>b.style.width='0');
+const bio=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const b=e.target;
+      setTimeout(()=>{b.style.width=b.dataset.level+'%';},200);
+      bio.unobserve(b);
+    }
+  });
+},{threshold:0.5});
+bars.forEach(b=>bio.observe(b));
+
+// BEFORE/AFTER SLIDERS
+document.querySelectorAll('[data-slider]').forEach(slider=>{
+  const after=slider.querySelector('.ba-after');
+  const handle=slider.querySelector('.ba-handle');
+  let dragging=false;
+  const updateSlider=(x)=>{
+    const rect=slider.getBoundingClientRect();
+    let pct=((x-rect.left)/rect.width)*100;
+    pct=Math.max(5,Math.min(95,pct));
+    after.style.clipPath=`inset(0 ${100-pct}% 0 0)`;
+    handle.style.left=pct+'%';
+  };
+  handle.addEventListener('mousedown',e=>{dragging=true;e.preventDefault();});
+  slider.addEventListener('mousedown',e=>{dragging=true;updateSlider(e.clientX);});
+  window.addEventListener('mousemove',e=>{if(dragging)updateSlider(e.clientX);});
+  window.addEventListener('mouseup',()=>{dragging=false;});
+  handle.addEventListener('touchstart',e=>{dragging=true;e.preventDefault();},{passive:false});
+  window.addEventListener('touchmove',e=>{if(dragging)updateSlider(e.touches[0].clientX);},{passive:false});
+  window.addEventListener('touchend',()=>{dragging=false;});
+  // Animate on hover auto-reveal
+  slider.addEventListener('mouseenter',()=>{
+    if(!dragging){
+      let dir=1,pct=50,raf;
+      const autoAnim=()=>{
+        pct+=dir*0.5;
+        if(pct>=70)dir=-1;
+        if(pct<=30)dir=1;
+        after.style.clipPath=`inset(0 ${100-pct}% 0 0)`;
+        handle.style.left=pct+'%';
+        raf=requestAnimationFrame(autoAnim);
+      };
+      slider._autoRaf=requestAnimationFrame(autoAnim);
+    }
+  });
+  slider.addEventListener('mouseleave',()=>{
+    cancelAnimationFrame(slider._autoRaf);
+  });
+});
+
+// PLAY BUTTON
+document.getElementById('playBtn').addEventListener('click',()=>{
+  const overlay=document.getElementById('playerOverlay');
+  overlay.innerHTML='<div style="color:rgba(212,168,67,0.6);font-family:Syne,sans-serif;font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;">Replace with your actual video embed (YouTube/Vimeo iframe)</div>';
+  overlay.style.background='rgba(7,7,7,0.85)';
+});
+
+// PARALLAX on hero grid
+window.addEventListener('scroll',()=>{
+  const scrollY=window.scrollY;
+  const grid=document.querySelector('.hero-bg-grid');
+  if(grid)grid.style.transform=`translateY(${scrollY*0.3}px)`;
+});
+</script>
+</body>
+</html>

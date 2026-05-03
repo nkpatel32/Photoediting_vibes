@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --black: #090909;
+    --white: #f5f0e8;
+    --gold: #c8a96e;
+    --red: #c0392b;
+    --dim: #1a1a1a;
+    --mid: #2a2a2a;
+  }
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+  .noise-overlay {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    opacity: 0.4;
+  }
+  .content { position: relative; z-index: 1; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.5rem 3rem;
+    border-bottom: 0.5px solid rgba(200,169,110,0.15);
+    background: rgba(9,9,9,0.85);
+    backdrop-filter: blur(12px);
+  }
+  .nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: 0.12em; color: var(--gold); }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a { color: rgba(245,240,232,0.55); text-decoration: none; font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase; transition: color 0.3s; }
+  .nav-links a:hover { color: var(--gold); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-top: 80px;
+    overflow: hidden;
+  }
+  .hero-left {
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 6rem 3rem 6rem 3rem;
+  }
+  .hero-tag {
+    font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 2rem;
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .hero-tag::before { content: ''; width: 2rem; height: 0.5px; background: var(--gold); display: block; }
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4rem, 8vw, 7rem);
+    line-height: 0.9;
+    letter-spacing: 0.04em;
+    color: var(--white);
+    margin-bottom: 2.5rem;
+  }
+  .hero-title .accent { color: var(--gold); }
+  .hero-title .italic { font-style: italic; opacity: 0.3; display: block; font-size: 0.6em; }
+  .hero-desc {
+    font-size: 0.95rem; line-height: 1.8; color: rgba(245,240,232,0.55);
+    max-width: 360px; margin-bottom: 3rem;
+  }
+  .hero-cta {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+  }
+  .btn-primary {
+    padding: 0.9rem 2.5rem; background: var(--gold); color: var(--black);
+    font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase;
+    border: none; cursor: pointer; font-weight: 500;
+    transition: all 0.3s; font-family: 'DM Sans', sans-serif;
+  }
+  .btn-primary:hover { background: var(--white); }
+  .btn-outline {
+    padding: 0.9rem 2.5rem; background: transparent; color: var(--white);
+    font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase;
+    border: 0.5px solid rgba(245,240,232,0.3); cursor: pointer;
+    transition: all 0.3s; font-family: 'DM Sans', sans-serif;
+  }
+  .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+  .hero-right {
+    position: relative; overflow: hidden;
+    background: var(--dim);
+  }
+  .hero-visual {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, #1a1209 0%, #0d0d0d 50%, #130a02 100%);
+  }
+  .hero-frame {
+    position: absolute; inset: 2rem;
+    border: 0.5px solid rgba(200,169,110,0.2);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .hero-aperture {
+    width: 200px; height: 200px; position: relative;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .aperture-ring {
+    position: absolute; border-radius: 50%;
+    border: 0.5px solid rgba(200,169,110,0.4);
+    animation: slowSpin 20s linear infinite;
+  }
+  .aperture-ring:nth-child(1) { width: 200px; height: 200px; border-style: dashed; animation-duration: 25s; }
+  .aperture-ring:nth-child(2) { width: 150px; height: 150px; animation-direction: reverse; animation-duration: 18s; }
+  .aperture-ring:nth-child(3) { width: 100px; height: 100px; border-color: rgba(200,169,110,0.8); animation-duration: 12s; }
+  .aperture-center {
+    width: 40px; height: 40px; background: var(--gold);
+    border-radius: 50%; position: relative; z-index: 1;
+    box-shadow: 0 0 40px rgba(200,169,110,0.4);
+  }
+  .hero-corner { position: absolute; width: 20px; height: 20px; }
+  .hero-corner.tl { top: 2rem; left: 2rem; border-top: 1px solid var(--gold); border-left: 1px solid var(--gold); }
+  .hero-corner.tr { top: 2rem; right: 2rem; border-top: 1px solid var(--gold); border-right: 1px solid var(--gold); }
+  .hero-corner.bl { bottom: 2rem; left: 2rem; border-bottom: 1px solid var(--gold); border-left: 1px solid var(--gold); }
+  .hero-corner.br { bottom: 2rem; right: 2rem; border-bottom: 1px solid var(--gold); border-right: 1px solid var(--gold); }
+  .filmstrip {
+    position: absolute; bottom: 3rem; left: 2rem; right: 2rem;
+    display: flex; gap: 4px; overflow: hidden;
+  }
+  .film-frame {
+    flex: 1; height: 60px; min-width: 0;
+    border: 0.5px solid rgba(200,169,110,0.2);
+    position: relative; overflow: hidden;
+  }
+  .film-frame::before {
+    content: ''; position: absolute; inset: 0;
+    background: rgba(200,169,110,0.04);
+  }
+  .film-perfs {
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 6px;
+    display: flex; gap: 4px; padding: 1px 2px;
+  }
+  .perf { flex: 1; height: 4px; background: rgba(200,169,110,0.2); border-radius: 1px; }
+
+  /* STATS STRIP */
+  .stats-strip {
+    border-top: 0.5px solid rgba(200,169,110,0.12);
+    border-bottom: 0.5px solid rgba(200,169,110,0.12);
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    padding: 2.5rem 3rem;
+  }
+  .stat-item { padding: 0 2rem; border-right: 0.5px solid rgba(200,169,110,0.12); }
+  .stat-item:last-child { border-right: none; }
+  .stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 3rem; color: var(--gold); letter-spacing: 0.05em; }
+  .stat-label { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(245,240,232,0.4); margin-top: 0.25rem; }
+
+  /* SERVICES */
+  .section { padding: 7rem 3rem; }
+  .section-header { margin-bottom: 5rem; }
+  .section-num { font-family: 'Bebas Neue', sans-serif; font-size: 0.75rem; letter-spacing: 0.3em; color: var(--gold); margin-bottom: 1rem; }
+  .section-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.5rem, 5vw, 4.5rem); letter-spacing: 0.04em; line-height: 1; }
+  .section-title .dim-text { color: rgba(245,240,232,0.2); }
+
+  .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; }
+  .service-card {
+    padding: 3rem 2.5rem;
+    border: 0.5px solid rgba(200,169,110,0.1);
+    position: relative; overflow: hidden;
+    transition: all 0.4s;
+    cursor: default;
+  }
+  .service-card::before {
+    content: ''; position: absolute; inset: 0;
+    background: rgba(200,169,110,0.03);
+    transform: scaleY(0); transform-origin: bottom;
+    transition: transform 0.4s;
+  }
+  .service-card:hover::before { transform: scaleY(1); }
+  .service-card:hover { border-color: rgba(200,169,110,0.35); }
+  .service-icon {
+    font-size: 2rem; margin-bottom: 1.5rem;
+    display: block; filter: grayscale(0.3);
+  }
+  .service-num {
+    position: absolute; top: 2rem; right: 2rem;
+    font-family: 'Bebas Neue', sans-serif; font-size: 4rem;
+    color: rgba(200,169,110,0.06); line-height: 1;
+  }
+  .service-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; letter-spacing: 0.06em; margin-bottom: 1rem; color: var(--white); }
+  .service-desc { font-size: 0.85rem; line-height: 1.75; color: rgba(245,240,232,0.45); }
+  .service-tags { margin-top: 2rem; display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  .tag {
+    font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase;
+    padding: 0.3rem 0.8rem;
+    border: 0.5px solid rgba(200,169,110,0.25);
+    color: rgba(200,169,110,0.7);
+  }
+
+  /* WORK GRID */
+  .work-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; grid-template-rows: auto auto; gap: 3px; }
+  .work-item {
+    position: relative; overflow: hidden;
+    background: var(--dim);
+    aspect-ratio: 1;
+    cursor: pointer;
+  }
+  .work-item:first-child { grid-row: span 2; aspect-ratio: auto; }
+  .work-item:nth-child(4) { grid-column: span 2; aspect-ratio: auto; min-height: 200px; }
+  .work-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(9,9,9,0.9) 0%, transparent 60%);
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 2rem; opacity: 0; transition: opacity 0.4s;
+  }
+  .work-item:hover .work-overlay { opacity: 1; }
+  .work-cat { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; }
+  .work-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: 0.06em; }
+  .work-bg {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    transition: transform 0.6s;
+  }
+  .work-item:hover .work-bg { transform: scale(1.04); }
+  /* Placeholder art for work items */
+  .work-bg-1 { background: linear-gradient(135deg, #1a1209 0%, #2d1f05 100%); }
+  .work-bg-2 { background: linear-gradient(135deg, #0a1020 0%, #0d1a30 100%); }
+  .work-bg-3 { background: linear-gradient(135deg, #120a0a 0%, #220f0f 100%); }
+  .work-bg-4 { background: linear-gradient(135deg, #0a1209 0%, #101f12 100%); }
+  .work-bg-5 { background: linear-gradient(135deg, #150d1e 0%, #200f30 100%); }
+  .work-placeholder {
+    width: 60%; height: 60%; opacity: 0.15;
+    border: 0.5px solid var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Bebas Neue', sans-serif; font-size: 3rem; color: var(--gold);
+  }
+  .work-add-yours {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 0.75rem;
+  }
+
+  /* PROCESS */
+  .process-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; }
+  .process-step { padding: 3rem 2rem; border-right: 0.5px solid rgba(200,169,110,0.1); }
+  .process-step:last-child { border-right: none; }
+  .step-num { font-family: 'Bebas Neue', sans-serif; font-size: 3.5rem; color: rgba(200,169,110,0.12); line-height: 1; margin-bottom: 1rem; }
+  .step-name { font-size: 0.8rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.75rem; }
+  .step-desc { font-size: 0.8rem; line-height: 1.7; color: rgba(245,240,232,0.4); }
+  .step-connector { display: flex; align-items: center; margin: 0 -1px; }
+
+  /* CONTACT */
+  .contact-section {
+    padding: 7rem 3rem;
+    border-top: 0.5px solid rgba(200,169,110,0.12);
+    display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center;
+  }
+  .contact-big { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3rem, 6vw, 5.5rem); line-height: 0.95; letter-spacing: 0.04em; }
+  .contact-big .gold { color: var(--gold); }
+  .contact-form { display: flex; flex-direction: column; gap: 1.5rem; }
+  .form-field { display: flex; flex-direction: column; gap: 0.5rem; }
+  .form-label { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(245,240,232,0.4); }
+  .form-input {
+    background: transparent; border: none; border-bottom: 0.5px solid rgba(200,169,110,0.25);
+    padding: 0.75rem 0; color: var(--white); font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem; outline: none; transition: border-color 0.3s;
+  }
+  .form-input:focus { border-bottom-color: var(--gold); }
+  .form-input::placeholder { color: rgba(245,240,232,0.2); }
+
+  /* FOOTER */
+  footer {
+    border-top: 0.5px solid rgba(200,169,110,0.12);
+    padding: 2rem 3rem;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .footer-copy { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(245,240,232,0.25); }
+  .footer-socials { display: flex; gap: 1.5rem; }
+  .footer-socials a { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(245,240,232,0.35); text-decoration: none; transition: color 0.3s; }
+  .footer-socials a:hover { color: var(--gold); }
+
+  /* MARQUEE */
+  .marquee-wrap { overflow: hidden; border-top: 0.5px solid rgba(200,169,110,0.1); border-bottom: 0.5px solid rgba(200,169,110,0.1); padding: 1rem 0; }
+  .marquee { display: flex; gap: 4rem; animation: marquee 20s linear infinite; white-space: nowrap; }
+  .marquee-item { font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; letter-spacing: 0.15em; color: rgba(200,169,110,0.3); }
+  .marquee-dot { color: var(--gold); }
+
+  @keyframes slowSpin { to { transform: rotate(360deg); } }
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  .section-divider { width: 3rem; height: 0.5px; background: var(--gold); margin: 1.5rem 0; }
+</style>
+</head>
+<body>
+<div class="noise-overlay"></div>
+<div class="content">
+
+<nav>
+  <div class="nav-logo">YourName</div>
+  <ul class="nav-links">
+    <li><a href="#">Work</a></li>
+    <li><a href="#">Services</a></li>
+    <li><a href="#">Process</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-tag">Photo · Video · Motion Graphics</div>
+    <h1 class="hero-title">
+      <span class="italic">Visual</span>
+      STORYTELLING<br>
+      <span class="accent">THROUGH</span> LENS
+    </h1>
+    <p class="hero-desc">
+      Cinematic photo & video editing that turns raw footage into unforgettable narratives. Precision color grading, motion design, and post-production for brands and creators.
+    </p>
+    <div class="hero-cta">
+      <button class="btn-primary" onclick="sendPrompt('Generate the full portfolio HTML code that I can deploy as a real website')">View My Work ↗</button>
+      <button class="btn-outline">Let's Talk</button>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-visual"></div>
+    <div class="hero-corner tl"></div>
+    <div class="hero-corner tr"></div>
+    <div class="hero-corner bl"></div>
+    <div class="hero-corner br"></div>
+    <div class="hero-frame">
+      <div class="hero-aperture">
+        <div class="aperture-ring"></div>
+        <div class="aperture-ring"></div>
+        <div class="aperture-ring"></div>
+        <div class="aperture-center"></div>
+      </div>
+    </div>
+    <div class="filmstrip">
+      <div class="film-frame"><div class="film-perfs"><div class="perf"></div><div class="perf"></div><div class="perf"></div><div class="perf"></div></div></div>
+      <div class="film-frame"><div class="film-perfs"><div class="perf"></div><div class="perf"></div><div class="perf"></div><div class="perf"></div></div></div>
+      <div class="film-frame"><div class="film-perfs"><div class="perf"></div><div class="perf"></div><div class="perf"></div><div class="perf"></div></div></div>
+      <div class="film-frame"><div class="film-perfs"><div class="perf"></div><div class="perf"></div><div class="perf"></div><div class="perf"></div></div></div>
+      <div class="film-frame"><div class="film-perfs"><div class="perf"></div><div class="perf"></div><div class="perf"></div><div class="perf"></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-strip">
+  <div class="stat-item"><div class="stat-num">200+</div><div class="stat-label">Projects Delivered</div></div>
+  <div class="stat-item"><div class="stat-num">5+</div><div class="stat-label">Years Experience</div></div>
+  <div class="stat-item"><div class="stat-num">80+</div><div class="stat-label">Happy Clients</div></div>
+  <div class="stat-item"><div class="stat-num">4K</div><div class="stat-label">Max Resolution</div></div>
+</div>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee">
+    <span class="marquee-item">Color Grading</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Video Editing</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Photo Retouching</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Motion Graphics</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Cinematic Grade</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Brand Films</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Social Content</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Wedding Films</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Color Grading</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Video Editing</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Photo Retouching</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Motion Graphics</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Cinematic Grade</span><span class="marquee-dot">·</span>
+    <span class="marquee-item">Brand Films</span><span class="marquee-dot">·</span>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section class="section">
+  <div class="section-header">
+    <div class="section-num">01 — Services</div>
+    <h2 class="section-title">WHAT I <span class="dim-text">CREATE</span></h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="services-grid">
+    <div class="service-card">
+      <span class="service-num">01</span>
+      <span class="service-icon">🎬</span>
+      <div class="service-name">Video Editing</div>
+      <p class="service-desc">From raw cuts to cinematic final edits. Pacing, rhythm, story arc — every second counts. Wedding films, brand videos, short docs, reels.</p>
+      <div class="service-tags"><span class="tag">Premiere Pro</span><span class="tag">DaVinci</span><span class="tag">Final Cut</span></div>
+    </div>
+    <div class="service-card">
+      <span class="service-num">02</span>
+      <span class="service-icon">🎨</span>
+      <div class="service-name">Color Grading</div>
+      <p class="service-desc">Cinematic looks, skin tone accuracy, creative LUT design. I grade to evoke the exact emotion your story needs.</p>
+      <div class="service-tags"><span class="tag">DaVinci Resolve</span><span class="tag">LUTs</span><span class="tag">HDR</span></div>
+    </div>
+    <div class="service-card">
+      <span class="service-num">03</span>
+      <span class="service-icon">📷</span>
+      <div class="service-name">Photo Editing</div>
+      <p class="service-desc">High-end retouching, composite work, and photo manipulation. Product shoots, portraits, editorial — pixel-perfect delivery.</p>
+      <div class="service-tags"><span class="tag">Photoshop</span><span class="tag">Lightroom</span><span class="tag">Capture One</span></div>
+    </div>
+    <div class="service-card">
+      <span class="service-num">04</span>
+      <span class="service-icon">✦</span>
+      <div class="service-name">Motion Graphics</div>
+      <p class="service-desc">Titles, transitions, animated lower thirds, intro sequences. Visual polish that separates professional from amateur.</p>
+      <div class="service-tags"><span class="tag">After Effects</span><span class="tag">Motion</span></div>
+    </div>
+    <div class="service-card">
+      <span class="service-num">05</span>
+      <span class="service-icon">📱</span>
+      <div class="service-name">Social Content</div>
+      <p class="service-desc">Reels, shorts, stories — optimized aspect ratios, hooks, and pacing built for retention and reach.</p>
+      <div class="service-tags"><span class="tag">Instagram</span><span class="tag">YouTube</span><span class="tag">TikTok</span></div>
+    </div>
+    <div class="service-card">
+      <span class="service-num">06</span>
+      <span class="service-icon">🎥</span>
+      <div class="service-name">Brand Films</div>
+      <p class="service-desc">Commercial and corporate video production — strategy, scripting, editing and delivery as a full post-production service.</p>
+      <div class="service-tags"><span class="tag">Commercial</span><span class="tag">Corporate</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- WORK GRID -->
+<section style="padding: 0 3rem 7rem;">
+  <div class="section-header">
+    <div class="section-num">02 — Portfolio</div>
+    <h2 class="section-title">SELECTED <span class="dim-text">WORK</span></h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="work-grid">
+    <div class="work-item">
+      <div class="work-bg work-bg-1">
+        <div class="work-placeholder">01</div>
+      </div>
+      <div class="work-overlay">
+        <div class="work-cat">Wedding Film</div>
+        <div class="work-title">The Golden Hour Edit</div>
+      </div>
+    </div>
+    <div class="work-item">
+      <div class="work-bg work-bg-2">
+        <div class="work-placeholder">02</div>
+      </div>
+      <div class="work-overlay">
+        <div class="work-cat">Brand Film</div>
+        <div class="work-title">Product Launch</div>
+      </div>
+    </div>
+    <div class="work-item">
+      <div class="work-bg work-bg-3">
+        <div class="work-placeholder">03</div>
+      </div>
+      <div class="work-overlay">
+        <div class="work-cat">Color Grade</div>
+        <div class="work-title">Cinematic Short</div>
+      </div>
+    </div>
+    <div class="work-item">
+      <div class="work-bg work-bg-4">
+        <div class="work-placeholder">04</div>
+      </div>
+      <div class="work-overlay">
+        <div class="work-cat">Photo Series</div>
+        <div class="work-title">Urban Portraits</div>
+      </div>
+    </div>
+    <div class="work-item">
+      <div class="work-bg work-bg-5">
+        <div class="work-placeholder">05</div>
+      </div>
+      <div class="work-overlay">
+        <div class="work-cat">Motion Graphics</div>
+        <div class="work-title">Title Sequence</div>
+      </div>
+    </div>
+  </div>
+  <p style="margin-top: 2rem; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(245,240,232,0.25); text-align: center;">Replace placeholder boxes with your actual work images</p>
+</section>
+
+<!-- PROCESS -->
+<section class="section" style="background: var(--dim);">
+  <div class="section-header">
+    <div class="section-num">03 — How I Work</div>
+    <h2 class="section-title">THE <span class="dim-text">PROCESS</span></h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="process-row">
+    <div class="process-step">
+      <div class="step-num">01</div>
+      <div class="step-name">Discovery</div>
+      <p class="step-desc">Understanding your vision, audience, and what success looks like for this project.</p>
+    </div>
+    <div class="process-step">
+      <div class="step-num">02</div>
+      <div class="step-name">Review</div>
+      <p class="step-desc">Going through all raw files, selecting the best material, planning the edit structure.</p>
+    </div>
+    <div class="process-step">
+      <div class="step-num">03</div>
+      <div class="step-name">Edit</div>
+      <p class="step-desc">Rough cut to fine cut. Pacing, music, story flow — refined iteratively.</p>
+    </div>
+    <div class="process-step">
+      <div class="step-num">04</div>
+      <div class="step-name">Grade</div>
+      <p class="step-desc">Color grading, sound mix, motion graphics. The finish that elevates everything.</p>
+    </div>
+    <div class="process-step">
+      <div class="step-num">05</div>
+      <div class="step-name">Deliver</div>
+      <p class="step-desc">Export in all required formats, organized file handoff, revision rounds included.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<div class="contact-section">
+  <div>
+    <div class="section-num">04 — Contact</div>
+    <div class="section-divider"></div>
+    <div class="contact-big">LET'S<br>MAKE<br><span class="gold">SOMETHING.</span></div>
+    <p style="margin-top: 2rem; font-size: 0.85rem; line-height: 1.8; color: rgba(245,240,232,0.4); max-width: 300px;">Available for freelance projects, long-term retainers, and collaborations globally.</p>
+  </div>
+  <div class="contact-form">
+    <div class="form-field">
+      <label class="form-label">Your Name</label>
+      <input class="form-input" type="text" placeholder="John Doe">
+    </div>
+    <div class="form-field">
+      <label class="form-label">Email Address</label>
+      <input class="form-input" type="email" placeholder="hello@email.com">
+    </div>
+    <div class="form-field">
+      <label class="form-label">Project Type</label>
+      <input class="form-input" type="text" placeholder="Wedding film / Brand video / Photo edit...">
+    </div>
+    <div class="form-field">
+      <label class="form-label">Message</label>
+      <input class="form-input" type="text" placeholder="Tell me about your project...">
+    </div>
+    <button class="btn-primary" style="margin-top: 1rem; align-self: flex-start;" onclick="sendPrompt('What else should I add to my portfolio to attract high-paying clients?')">Send Message ↗</button>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-copy">© 2025 YourName. All rights reserved.</div>
+  <div class="footer-socials">
+    <a href="#">Instagram</a>
+    <a href="#">Behance</a>
+    <a href="#">YouTube</a>
+    <a href="#">LinkedIn</a>
+  </div>
+</footer>
+
+</div>
+</body>
+</html>

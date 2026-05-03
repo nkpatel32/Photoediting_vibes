@@ -1,0 +1,271 @@
+/* Item Form Modal */
+.iform-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(6, 6, 6, 0.88);
+  backdrop-filter: blur(10px);
+  z-index: 4000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  animation: iformIn 0.2s ease both;
+}
+@keyframes iformIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.iform-box {
+  background: #0d0d0d;
+  border: 0.5px solid rgba(212, 168, 67, 0.2);
+  width: 100%;
+  max-width: 720px;
+  max-height: calc(100vh - 3rem);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: iformSlide 0.3s cubic-bezier(0.25,0.46,0.45,0.94) both;
+}
+@keyframes iformSlide {
+  from { transform: translateY(24px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+/* Header */
+.iform-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 1.5rem 2rem;
+  border-bottom: 0.5px solid rgba(212,168,67,0.1);
+  flex-shrink: 0;
+}
+.iform-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.5rem;
+  letter-spacing: 0.06em;
+  color: #f2ede4;
+  margin-bottom: 0.2rem;
+}
+.iform-sub {
+  font-size: 0.62rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(242,237,228,0.28);
+}
+.iform-close {
+  background: transparent;
+  border: 0.5px solid rgba(242,237,228,0.15);
+  color: rgba(242,237,228,0.4);
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+.iform-close:hover { border-color: #c0392b; color: #c0392b; }
+
+/* Tabs */
+.iform-tabs {
+  display: flex;
+  border-bottom: 0.5px solid rgba(212,168,67,0.1);
+  flex-shrink: 0;
+}
+.iform-tab {
+  padding: 0.7rem 1.5rem;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(242,237,228,0.35);
+  cursor: pointer;
+  font-family: 'Syne', sans-serif;
+  transition: all 0.2s;
+}
+.iform-tab:hover { color: rgba(242,237,228,0.6); }
+.iform-tab.active {
+  color: #d4a843;
+  border-bottom-color: #d4a843;
+}
+
+/* Body */
+.iform-body {
+  overflow-y: auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.iform-tab-content {
+  padding: 1.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+/* Fields */
+.iform-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
+}
+.iform-field { display: flex; flex-direction: column; gap: 0.4rem; }
+.iform-field-full { }
+.iform-label {
+  font-size: 0.58rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(212,168,67,0.55);
+}
+.iform-label-hint {
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  color: rgba(242,237,228,0.25);
+  text-transform: none;
+}
+.iform-input, .iform-select, .iform-textarea {
+  background: rgba(255,255,255,0.03);
+  border: 0.5px solid rgba(242,237,228,0.1);
+  padding: 0.65rem 0.85rem;
+  color: #f2ede4;
+  font-family: 'Syne', sans-serif;
+  font-size: 0.82rem;
+  outline: none;
+  transition: border-color 0.2s;
+  width: 100%;
+}
+.iform-input:focus, .iform-select:focus, .iform-textarea:focus {
+  border-color: #d4a843;
+}
+.iform-input.err, .iform-select.err { border-color: #c0392b; }
+.iform-upload-group {
+  display: flex;
+  gap: 0.5rem;
+}
+.iform-upload-group .iform-input {
+  flex: 1;
+}
+.iform-upload-btn {
+  background: rgba(212,168,67,0.1);
+  border: 0.5px solid rgba(212,168,67,0.3);
+  color: #d4a843;
+  padding: 0 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-family: 'Syne', sans-serif;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.iform-upload-btn:hover {
+  background: rgba(212,168,67,0.2);
+}
+.iform-upload-btn.uploading {
+  opacity: 0.6;
+  cursor: not-allowed;
+  animation: pulse 1.5s infinite;
+}
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 0.3; }
+  100% { opacity: 0.6; }
+}
+.iform-select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23d4a843' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.8rem center;
+  padding-right: 2rem;
+}
+.iform-select option { background: #0d0d0d; }
+.iform-textarea { resize: vertical; min-height: 80px; }
+.iform-err {
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  color: #c0392b;
+}
+
+/* Image rows */
+.iform-img-row {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+.iform-img-preview {
+  width: 110px;
+  height: 80px;
+  flex-shrink: 0;
+  background: rgba(255,255,255,0.03);
+  border: 0.5px solid rgba(212,168,67,0.12);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+.iform-preview-img { width: 100%; height: 100%; object-fit: cover; }
+.iform-preview-empty {
+  font-size: 0.55rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(242,237,228,0.18);
+}
+
+/* Hint */
+.iform-hint {
+  font-size: 0.68rem;
+  line-height: 1.65;
+  color: rgba(242,237,228,0.28);
+  background: rgba(212,168,67,0.04);
+  border-left: 2px solid rgba(212,168,67,0.3);
+  padding: 0.7rem 1rem;
+}
+.iform-hint strong { color: rgba(212,168,67,0.6); }
+
+/* Footer */
+.iform-footer {
+  padding: 1.2rem 2rem;
+  border-top: 0.5px solid rgba(212,168,67,0.1);
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+.iform-btn-cancel {
+  padding: 0.7rem 1.6rem;
+  background: transparent;
+  border: 0.5px solid rgba(242,237,228,0.15);
+  color: rgba(242,237,228,0.4);
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  cursor: pointer;
+  font-family: 'Syne', sans-serif;
+  transition: all 0.2s;
+}
+.iform-btn-cancel:hover { border-color: rgba(242,237,228,0.35); color: #f2ede4; }
+.iform-btn-save {
+  padding: 0.7rem 2rem;
+  background: #d4a843;
+  border: none;
+  color: #060606;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  cursor: pointer;
+  font-family: 'Syne', sans-serif;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+.iform-btn-save:hover { background: #e8c060; }

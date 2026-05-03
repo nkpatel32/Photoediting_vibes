@@ -1,0 +1,20 @@
+.testi-section{padding:8rem 4rem;background:var(--dim);}
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:4rem;}
+.testi-card{
+  padding:3rem;border:0.5px solid rgba(212,168,67,0.1);
+  position:relative;transition:border-color 0.4s;
+}
+.testi-card:hover{border-color:rgba(212,168,67,0.3);}
+.testi-quote{
+  font-family:'Bebas Neue',sans-serif;font-size:4rem;
+  color:var(--gold);opacity:0.15;line-height:0.8;margin-bottom:1rem;
+}
+.testi-text{font-size:0.85rem;line-height:1.8;color:rgba(242,237,228,0.5);margin-bottom:2rem;}
+.testi-author{font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);}
+.testi-role{font-size:0.65rem;color:rgba(242,237,228,0.3);margin-top:0.25rem;}
+.testi-stars{color:var(--gold);font-size:0.7rem;margin-bottom:1rem;}
+
+@media(max-width:900px){
+  .testi-section{padding:4rem 1.5rem;}
+  .testi-grid{grid-template-columns:1fr;}
+}

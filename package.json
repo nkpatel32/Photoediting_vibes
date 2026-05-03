@@ -1,0 +1,13 @@
+{
+  "name": "photoediting_vibes",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
+    "dev:frontend": "cd portfolio && npm run dev",
+    "dev:backend": "cd backend && npm run dev",
+    "install:all": "npm install && cd portfolio && npm install && cd ../backend && npm install"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}

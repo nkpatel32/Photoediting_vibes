@@ -1,0 +1,301 @@
+/* Admin shared field styles */
+.af-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.af-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+}
+.af-section-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.6rem;
+  letter-spacing: 0.06em;
+  color: #f2ede4;
+  margin-bottom: 0.2rem;
+}
+.af-section-sub {
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(242,237,228,0.28);
+}
+.af-save-btn {
+  padding: 0.7rem 1.6rem;
+  background: #d4a843;
+  border: none;
+  color: #060606;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-family: 'Syne', sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background 0.2s;
+}
+.af-save-btn:hover   { background: #e8c060; }
+.af-save-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.af-section-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+/* Field */
+.af-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.af-label {
+  font-size: 0.58rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(212,168,67,0.55);
+}
+.af-hint {
+  color: rgba(242,237,228,0.25);
+  text-transform: none;
+  letter-spacing: 0.1em;
+}
+.af-err {
+  font-size: 0.58rem;
+  color: #c0392b;
+  letter-spacing: 0.1em;
+}
+
+/* Inputs */
+.af-input {
+  background: rgba(255,255,255,0.03);
+  border: 0.5px solid rgba(242,237,228,0.1);
+  padding: 0.65rem 0.85rem;
+  color: #f2ede4;
+  font-family: 'Syne', sans-serif;
+  font-size: 0.82rem;
+  outline: none;
+  transition: border-color 0.2s;
+  width: 100%;
+}
+.af-input:focus { border-color: #d4a843; }
+.af-textarea { resize: vertical; min-height: 80px; }
+
+/* Upload Group */
+.af-upload-group {
+  display: flex;
+  gap: 0.5rem;
+}
+.af-upload-group .af-input {
+  flex: 1;
+}
+.af-upload-btn {
+  background: rgba(212,168,67,0.1);
+  border: 0.5px solid rgba(212,168,67,0.3);
+  color: #d4a843;
+  padding: 0 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-family: 'Syne', sans-serif;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.af-upload-btn:hover {
+  background: rgba(212,168,67,0.2);
+}
+.af-upload-btn.uploading {
+  opacity: 0.6;
+  cursor: not-allowed;
+  animation: af-pulse 1.5s infinite;
+}
+@keyframes af-pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 0.3; }
+  100% { opacity: 0.6; }
+}
+
+/* Image preview */
+.af-img-preview {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem;
+  background: rgba(255,255,255,0.02);
+  border: 0.5px solid rgba(212,168,67,0.1);
+}
+.af-preview-img {
+  width: 80px;
+  height: 54px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+.af-preview-label {
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(242,237,228,0.3);
+}
+
+/* Row */
+.af-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.2rem;
+}
+
+/* Divider */
+.af-divider {
+  height: 0.5px;
+  background: rgba(212,168,67,0.12);
+  position: relative;
+  margin: 1rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.af-divider span {
+  background: #0d0d0d;
+  padding: 0 0.75rem;
+  font-size: 0.58rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(212,168,67,0.4);
+}
+
+/* Icon button */
+.af-icon-btn {
+  width: 30px;
+  height: 30px;
+  background: transparent;
+  border: 0.5px solid rgba(242,237,228,0.12);
+  color: rgba(242,237,228,0.4);
+  cursor: pointer;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+.af-icon-btn:hover { border-color: rgba(242,237,228,0.3); color: #f2ede4; }
+.af-icon-btn.danger:hover { border-color: #c0392b; color: #c0392b; }
+
+/* Range */
+.af-range-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.af-range {
+  flex: 1;
+  appearance: none;
+  height: 2px;
+  background: rgba(212,168,67,0.2);
+  outline: none;
+  cursor: pointer;
+}
+.af-range::-webkit-slider-thumb {
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  background: #d4a843;
+  border-radius: 50%;
+}
+.af-range-val {
+  font-size: 0.7rem;
+  color: #d4a843;
+  min-width: 36px;
+  text-align: right;
+}
+
+/* Card (for list items in admin) */
+.af-card {
+  background: rgba(255,255,255,0.02);
+  border: 0.5px solid rgba(212,168,67,0.1);
+  padding: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+.af-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.af-card-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.2rem;
+  color: rgba(212,168,67,0.3);
+  letter-spacing: 0.05em;
+}
+.af-card-actions {
+  display: flex;
+  gap: 0.4rem;
+}
+
+/* Add button */
+.af-add-btn {
+  padding: 0.6rem 1.2rem;
+  background: transparent;
+  border: 0.5px solid rgba(212,168,67,0.25);
+  color: rgba(212,168,67,0.7);
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-family: 'Syne', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
+  align-self: flex-start;
+}
+.af-add-btn:hover { background: rgba(212,168,67,0.08); border-color: #d4a843; color: #d4a843; }
+
+/* Tag input row */
+.af-tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  padding: 0.5rem;
+  background: rgba(255,255,255,0.02);
+  border: 0.5px solid rgba(242,237,228,0.1);
+  min-height: 48px;
+}
+.af-tag {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: rgba(212,168,67,0.1);
+  border: 0.5px solid rgba(212,168,67,0.2);
+  padding: 0.2rem 0.6rem;
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  color: rgba(212,168,67,0.8);
+}
+.af-tag-del {
+  background: none;
+  border: none;
+  color: rgba(192,57,43,0.6);
+  cursor: pointer;
+  padding: 0;
+  font-size: 0.75rem;
+  line-height: 1;
+}
+.af-tag-del:hover { color: #c0392b; }
+.af-tag-input {
+  background: transparent;
+  border: none;
+  color: #f2ede4;
+  font-family: 'Syne', sans-serif;
+  font-size: 0.75rem;
+  outline: none;
+  min-width: 120px;
+  padding: 0.2rem 0.3rem;
+}

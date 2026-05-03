@@ -1,0 +1,20 @@
+#loader{
+  position:fixed;inset:0;z-index:1000;
+  background:var(--ink);
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:2rem;
+  transition:opacity 0.8s,visibility 0.8s;
+}
+.loader-text{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:5rem;letter-spacing:0.1em;
+  color:var(--gold);
+  animation:loaderPulse 1.5s ease-in-out infinite;
+}
+.loader-bar-wrap{width:200px;height:1px;background:rgba(212,168,67,0.2);}
+.loader-bar{height:1px;background:var(--gold);width:0;animation:loadFill 2s ease forwards;}
+.loader-subtitle{
+  font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;
+  color:rgba(212,168,67,0.4);
+}
+#loader.hidden{opacity:0;visibility:hidden;pointer-events:none;}

@@ -1,0 +1,41 @@
+.contact-section{
+  padding:8rem 4rem;
+  display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center;
+  border-top:0.5px solid rgba(212,168,67,0.1);
+}
+.contact-big{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(3.5rem,6vw,6rem);
+  line-height:0.9;letter-spacing:0.03em;
+}
+.contact-big .g{color:var(--gold);}
+.contact-desc{
+  margin-top:1.5rem;font-size:0.85rem;line-height:1.9;
+  color:rgba(242,237,228,0.4);max-width:340px;
+}
+.contact-ig{
+  margin-top:2rem;display:inline-flex;align-items:center;gap:1rem;
+  font-size:0.75rem;letter-spacing:0.15em;
+  border:0.5px solid rgba(212,168,67,0.2);
+  padding:0.8rem 1.5rem;color:rgba(212,168,67,0.7);
+  text-decoration:none;transition:all 0.3s;cursor:none;
+}
+.contact-ig:hover{border-color:var(--gold);color:var(--gold);}
+.contact-form{display:flex;flex-direction:column;gap:2rem;}
+.f-field{display:flex;flex-direction:column;gap:0.5rem;}
+.f-label{font-size:0.6rem;letter-spacing:0.25em;text-transform:uppercase;color:rgba(242,237,228,0.3);}
+.f-input{
+  background:transparent;border:none;
+  border-bottom:0.5px solid rgba(212,168,67,0.2);
+  padding:0.8rem 0;color:var(--paper);
+  font-family:'Syne',sans-serif;font-size:0.9rem;
+  outline:none;transition:border-color 0.3s;cursor:none;
+}
+.f-input:focus{border-bottom-color:var(--gold);}
+.f-input::placeholder{color:rgba(242,237,228,0.15);}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:2rem;}
+
+@media(max-width:900px){
+  .contact-section{grid-template-columns:1fr;gap:3rem;padding:4rem 1.5rem;}
+  .f-row{grid-template-columns:1fr;}
+}
