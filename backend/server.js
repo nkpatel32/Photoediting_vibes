@@ -93,6 +93,11 @@ const upload = multer({ storage: storage });
 
 // --- API ROUTES ---
 
+// Health Check
+app.get('/', (req, res) => {
+  res.json({ status: 'Online', message: 'Photoediting Vibes Backend is running.' });
+});
+
 // Get site config
 app.get('/api/config', async (req, res) => {
   try {
