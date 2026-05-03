@@ -161,11 +161,28 @@
 @media (max-width: 900px) {
   .gallery-section { padding: 0 1.5rem 4rem; }
   .gallery-grid {
-    column-count: 2;
+    column-count: unset;
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .gallery-grid::-webkit-scrollbar {
+    display: none;
+  }
+  .g-item {
+    min-width: 80vw;
+    margin-bottom: 0;
+    scroll-snap-align: center;
+    flex-shrink: 0;
   }
 }
 @media (max-width: 480px) {
-  .gallery-grid {
-    column-count: 1;
+  .g-item {
+    min-width: 90vw;
   }
 }

@@ -62,5 +62,22 @@
 
 @media(max-width:900px){
   .ba-section{padding:4rem 1.5rem;}
-  .ba-grid{grid-template-columns:1fr;}
+  .ba-grid{
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .ba-grid::-webkit-scrollbar {
+    display: none;
+  }
+  .ba-item{
+    min-width: 85vw;
+    scroll-snap-align: center;
+    flex-shrink: 0;
+  }
 }

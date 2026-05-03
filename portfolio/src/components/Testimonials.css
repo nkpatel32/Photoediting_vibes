@@ -16,5 +16,21 @@
 
 @media(max-width:900px){
   .testi-section{padding:4rem 1.5rem;}
-  .testi-grid{grid-template-columns:1fr;}
+  .testi-grid{
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Hide scrollbar Firefox */
+  }
+  .testi-grid::-webkit-scrollbar {
+    display: none; /* Hide scrollbar Chrome/Safari */
+  }
+  .testi-card{
+    min-width: 85vw;
+    scroll-snap-align: center;
+  }
 }

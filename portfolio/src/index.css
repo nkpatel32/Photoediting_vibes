@@ -15,7 +15,10 @@
   --gfog:rgba(212,168,67,0.08);
 }
 
-html{scroll-behavior:smooth;}
+html{
+  scroll-behavior:smooth;
+  overflow-x:hidden;
+}
 
 body{
   background:var(--ink);
