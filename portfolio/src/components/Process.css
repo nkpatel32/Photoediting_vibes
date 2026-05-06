@@ -53,7 +53,7 @@
   .p-step {
     border-right: none;
     background: var(--ink);
-    border-radius: 12px;
+    border-radius: 0;
     border: 0.5px solid rgba(212, 168, 67, 0.15);
     box-shadow: 0 -15px 30px rgba(0,0,0,0.8);
     position: sticky;

@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useSite } from '../context/SiteContext';
 import ScrollIndicator from './ScrollIndicator';
-import ScrollStack, { ScrollStackItem } from './ScrollStack';
 import './Process.css';
 
 export default function Process() {
@@ -36,31 +35,17 @@ export default function Process() {
         <div className="sec-divider"></div>
       </div>
       
-      {isMobile ? (
-        <ScrollStack useWindowScroll={true} itemScale={0.05} itemStackDistance={20} stackPosition="50%">
-          {process.map((s, i) => (
-            <ScrollStackItem key={s.id || i}>
-              <div className="p-num">{String(i + 1).padStart(2, '0')}</div>
-              <div className="p-name">{s.name}</div>
-              <p className="p-desc">{s.desc}</p>
-            </ScrollStackItem>
-          ))}
-        </ScrollStack>
-      ) : (
-        <>
-          <div className="process-steps" style={{ '--cols': process.length }} ref={scrollRef} onScroll={handleScroll}>
-            {process.map((s, i) => (
-              <div className="p-step reveal" key={s.id || i} style={{ transitionDelay: `${i * 0.1}s`, '--i': i }}>
-                {i < process.length - 1 && <div className="p-arrow"></div>}
-                <div className="p-num">{String(i + 1).padStart(2, '0')}</div>
-                <div className="p-name">{s.name}</div>
-                <p className="p-desc">{s.desc}</p>
-              </div>
-            ))}
+      <div className="process-steps" style={{ '--cols': process.length }} ref={scrollRef} onScroll={handleScroll}>
+        {process.map((s, i) => (
+          <div className="p-step reveal" key={s.id || i} style={{ transitionDelay: `${i * 0.1}s`, '--i': i }}>
+            {i < process.length - 1 && <div className="p-arrow"></div>}
+            <div className="p-num">{String(i + 1).padStart(2, '0')}</div>
+            <div className="p-name">{s.name}</div>
+            <p className="p-desc">{s.desc}</p>
           </div>
-          <ScrollIndicator progress={scrollProgress} />
-        </>
-      )}
+        ))}
+      </div>
+      <ScrollIndicator progress={scrollProgress} />
     </section>
   );
 }
