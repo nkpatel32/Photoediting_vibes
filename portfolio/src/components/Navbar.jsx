@@ -22,6 +22,7 @@ export default function Navbar() {
   ];
 
   return (
+    <>
     <nav className="navbar">
       <div className="logo" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
         {nav.logo}<span>{nav.logoSuffix}</span>
@@ -45,6 +46,8 @@ export default function Navbar() {
         </button>
       </div>
 
+      </nav>
+
       {/* Mobile Menu Overlay */}
       <div className={`mobile-menu-overlay ${menuOpen ? 'open' : ''}`}>
         <button className="mobile-menu-close" onClick={() => setMenuOpen(false)}>
@@ -67,6 +70,6 @@ export default function Navbar() {
           </a>
         </div>
       </div>
-    </nav>
+    </>
   );
 }

@@ -12,5 +12,6 @@ footer{
 .ft-right a:hover{color:var(--gold);}
 
 @media(max-width:900px){
-  footer{flex-direction:column;gap:1rem;text-align:center;padding:2rem 1.5rem;}
+  footer{flex-direction:column;gap:1.5rem;text-align:center;padding:2rem 1.5rem;}
+  .ft-right { flex-wrap: wrap; justify-content: center; gap: 1rem; }
 }

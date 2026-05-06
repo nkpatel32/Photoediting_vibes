@@ -7,11 +7,11 @@ export default function CameraLensIntro({ onDone }) {
   const [phase, setPhase] = useState('loading'); // loading | opening | done
 
   useEffect(() => {
-    const t1 = setTimeout(() => setPhase('opening'), 2200);
+    const t1 = setTimeout(() => setPhase('opening'), 800);
     const t2 = setTimeout(() => {
       setPhase('done');
       onDone?.();
-    }, 2200 + 1200); // Faster 2D opening
+    }, 800 + 1000); // Faster 2D opening
     return () => { clearTimeout(t1); clearTimeout(t2); };
   }, []);
 
@@ -23,11 +23,8 @@ export default function CameraLensIntro({ onDone }) {
       {/* ── Loading phase ── */}
       <div className="shutter-loading">
         <div className="sl-brand">PEV</div>
-        <div className="sl-ring-wrap">
-          <svg viewBox="0 0 100 100" className="sl-svg">
-            <circle cx="50" cy="50" r="44" className="sl-track" />
-            <circle cx="50" cy="50" r="44" className="sl-fill" />
-          </svg>
+        <div className="sl-linear-wrap">
+          <div className="sl-linear-fill"></div>
         </div>
         <div className="sl-label">Loading Portfolio</div>
       </div>

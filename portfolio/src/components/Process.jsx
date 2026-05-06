@@ -1,13 +1,21 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useSite } from '../context/SiteContext';
 import ScrollIndicator from './ScrollIndicator';
+import ScrollStack, { ScrollStackItem } from './ScrollStack';
 import './Process.css';
 
 export default function Process() {
   const { site } = useSite();
   const { process } = site;
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 900);
   const scrollRef = useRef(null);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 900);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const handleScroll = () => {
     if (!scrollRef.current) return;
@@ -27,17 +35,32 @@ export default function Process() {
         <h2 className="sec-h2">HOW IT<br /><span className="ghost">WORKS</span></h2>
         <div className="sec-divider"></div>
       </div>
-      <div className="process-steps" style={{ gridTemplateColumns: `repeat(${process.length}, 1fr)` }} ref={scrollRef} onScroll={handleScroll}>
-        {process.map((s, i) => (
-          <div className="p-step reveal" key={s.id || i} style={{ transitionDelay: `${i * 0.1}s` }}>
-            {i < process.length - 1 && <div className="p-arrow"></div>}
-            <div className="p-num">{String(i + 1).padStart(2, '0')}</div>
-            <div className="p-name">{s.name}</div>
-            <p className="p-desc">{s.desc}</p>
+      
+      {isMobile ? (
+        <ScrollStack useWindowScroll={true} itemScale={0.05} itemStackDistance={20} stackPosition="50%">
+          {process.map((s, i) => (
+            <ScrollStackItem key={s.id || i}>
+              <div className="p-num">{String(i + 1).padStart(2, '0')}</div>
+              <div className="p-name">{s.name}</div>
+              <p className="p-desc">{s.desc}</p>
+            </ScrollStackItem>
+          ))}
+        </ScrollStack>
+      ) : (
+        <>
+          <div className="process-steps" style={{ '--cols': process.length }} ref={scrollRef} onScroll={handleScroll}>
+            {process.map((s, i) => (
+              <div className="p-step reveal" key={s.id || i} style={{ transitionDelay: `${i * 0.1}s`, '--i': i }}>
+                {i < process.length - 1 && <div className="p-arrow"></div>}
+                <div className="p-num">{String(i + 1).padStart(2, '0')}</div>
+                <div className="p-name">{s.name}</div>
+                <p className="p-desc">{s.desc}</p>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
-      <ScrollIndicator progress={scrollProgress} />
+          <ScrollIndicator progress={scrollProgress} />
+        </>
+      )}
     </section>
   );
 }
