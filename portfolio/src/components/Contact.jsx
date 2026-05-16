@@ -4,7 +4,7 @@ import { Camera, Mail, Phone, Send, ExternalLink, Loader2, CheckCircle, AlertCir
 import './Contact.css';
 
 // Web3Forms access key — get yours free at https://web3forms.com
-const WEB3FORMS_KEY = 'd2721b0c-48e8-4ee1-acb5-78105b34fa40';
+const WEB3FORMS_KEY = '598ef1a3-f4d9-4121-8bca-0701a8301b6f';
 
 export default function Contact() {
   const { site } = useSite();
