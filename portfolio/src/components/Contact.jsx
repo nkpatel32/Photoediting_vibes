@@ -40,7 +40,7 @@ export default function Contact() {
       });
       const data = await res.json();
       
-      if (!res.ok) throw new Error(data.error || 'Failed to send');
+      if (!res.ok) throw new Error(data.details || data.error || 'Failed to send');
       
       setStatus('success');
       setFormData({ name: '', email: '', service: '', budget: '', details: '' });
