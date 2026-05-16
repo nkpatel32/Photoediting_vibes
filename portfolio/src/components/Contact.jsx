@@ -29,7 +29,11 @@ export default function Contact() {
     setErrMsg('');
 
     try {
-      const res = await fetch('http://localhost:3001/api/contact', {
+      const apiUrl = window.location.hostname === 'localhost' 
+        ? 'http://localhost:3001/api/contact'
+        : 'https://photoediting-vibes.onrender.com/api/contact';
+
+      const res = await fetch(apiUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
