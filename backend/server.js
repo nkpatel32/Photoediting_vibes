@@ -28,7 +28,9 @@ cloudinary.config({
 
 // Nodemailer Transporter
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true, // use SSL
   auth: {
     user: process.env.SMTP_USER,
     pass: process.env.SMTP_PASS
@@ -264,7 +266,7 @@ app.post('/api/contact', async (req, res) => {
 
   } catch (error) {
     console.error('Email Send Error:', error);
-    res.status(500).json({ error: 'Failed to send email' });
+    res.status(500).json({ error: 'Failed to send email', details: error.message });
   }
 });
 
