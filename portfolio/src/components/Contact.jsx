@@ -3,6 +3,9 @@ import { useSite } from '../context/SiteContext';
 import { Camera, Mail, Phone, Send, ExternalLink, Loader2, CheckCircle, AlertCircle } from 'lucide-react';
 import './Contact.css';
 
+// Web3Forms access key — get yours free at https://web3forms.com
+const WEB3FORMS_KEY = 'd2721b0c-48e8-4ee1-acb5-78105b34fa40';
+
 export default function Contact() {
   const { site } = useSite();
   const { contact, links } = site;
@@ -29,19 +32,24 @@ export default function Contact() {
     setErrMsg('');
 
     try {
-      const apiUrl = window.location.hostname === 'localhost' 
-        ? 'http://localhost:3001/api/contact'
-        : 'https://photoediting-vibes.onrender.com/api/contact';
-
-      const res = await fetch(apiUrl, {
+      const res = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+        body: JSON.stringify({
+          access_key: WEB3FORMS_KEY,
+          subject: `New Lead: ${formData.service || 'Inquiry'} from ${formData.name}`,
+          from_name: formData.name,
+          name: formData.name,
+          email: formData.email,
+          service: formData.service || 'Not specified',
+          budget: formData.budget || 'Not specified',
+          message: formData.details,
+        })
       });
       const data = await res.json();
-      
-      if (!res.ok) throw new Error(data.details || data.error || 'Failed to send');
-      
+
+      if (!data.success) throw new Error(data.message || 'Failed to send');
+
       setStatus('success');
       setFormData({ name: '', email: '', service: '', budget: '', details: '' });
       setTimeout(() => setStatus('idle'), 5000);
