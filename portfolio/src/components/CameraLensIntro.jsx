@@ -7,11 +7,11 @@ export default function CameraLensIntro({ onDone }) {
   const [phase, setPhase] = useState('loading'); // loading | opening | done
 
   useEffect(() => {
-    const t1 = setTimeout(() => setPhase('opening'), 800);
+    const t1 = setTimeout(() => setPhase('opening'), 300);
     const t2 = setTimeout(() => {
       setPhase('done');
       onDone?.();
-    }, 800 + 1000); // Faster 2D opening
+    }, 300 + 600); // Faster 2D opening
     return () => { clearTimeout(t1); clearTimeout(t2); };
   }, []);
 

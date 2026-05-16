@@ -6,6 +6,7 @@ import fs from 'fs';
 import { fileURLToPath } from 'url';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import nodemailer from 'nodemailer';
 
 import { v2 as cloudinary } from 'cloudinary';
 
@@ -23,6 +24,15 @@ cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key:    process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
+// Nodemailer Transporter
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS
+  }
 });
 
 // Middleware
@@ -211,6 +221,47 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
   } catch (error) {
     console.error('Cloudinary Upload Error:', error);
     res.status(500).json({ error: 'Failed to upload image to cloud' });
+  }
+});
+
+// Send Contact Email
+app.post('/api/contact', async (req, res) => {
+  try {
+    const { name, email, service, budget, details } = req.body;
+
+    if (!name || !email || !details) {
+      return res.status(400).json({ error: 'Name, Email, and Details are required' });
+    }
+
+    if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
+      console.warn("SMTP credentials not configured in .env file.");
+      return res.status(500).json({ error: 'Server email not configured' });
+    }
+
+    const mailOptions = {
+      from: `"${name} (Portfolio)" <${process.env.SMTP_USER}>`,
+      replyTo: email,
+      to: process.env.SMTP_USER,
+      subject: `New Lead: ${service || 'Inquiry'} from ${name}`,
+      html: `
+        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2>New Contact Form Submission</h2>
+          <p><strong>Name:</strong> ${name}</p>
+          <p><strong>Email:</strong> ${email}</p>
+          <p><strong>Service Needed:</strong> ${service || 'Not specified'}</p>
+          <p><strong>Budget:</strong> ${budget || 'Not specified'}</p>
+          <h3>Project Details:</h3>
+          <p style="background: #f4f4f4; padding: 15px; border-radius: 5px;">${details.replace(/\n/g, '<br>')}</p>
+        </div>
+      `
+    };
+
+    await transporter.sendMail(mailOptions);
+    res.json({ success: true, message: 'Email sent successfully!' });
+
+  } catch (error) {
+    console.error('Email Send Error:', error);
+    res.status(500).json({ error: 'Failed to send email' });
   }
 });
 

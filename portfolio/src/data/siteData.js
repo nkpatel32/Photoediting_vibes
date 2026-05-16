@@ -46,7 +46,7 @@ export const DEFAULT_SITE = {
     heading2:    'MAGIC',
     heading3:    'HAPPEN',
     description: 'A curated reel of my best photo and video edits — Lightroom transformations, cinematic color grades, AI-powered retouching, and motion work.',
-    videoUrl:    '',
+    videoUrl:    'https://www.youtube.com/embed/JwtATvo5rK8',
     bgImage:     'https://images.unsplash.com/photo-1536240478700-b869070f9279?w=1600&q=80',
     timecode:    '00:00:00:00 • 4K • 60fps',
     playerTitle: 'PHOTOEDITING VIBES — 2025 SHOWREEL',

@@ -45,36 +45,48 @@ export default function Showreel() {
         <p className="ba-desc">{showreel.description}</p>
       </div>
 
-      <div className="showreel-player reveal">
-        {/* Background image / video embed */}
-        {showVideo && showreel.videoUrl ? (
-          <iframe
-            className="showreel-iframe"
-            src={`${showreel.videoUrl}?autoplay=1`}
-            allow="autoplay; fullscreen"
-            allowFullScreen
-            title="Showreel"
-          />
-        ) : (
-          <div
-            className="showreel-bg"
-            style={{ backgroundImage: `url(${showreel.bgImage})` }}
-          />
-        )}
-
-        {/* Overlay */}
-        {!showVideo && (
-          <div className="showreel-overlay">
-            <div className={`equalizer ${playing ? 'playing' : ''}`} ref={wfRef}></div>
-            <button className="play-btn" onClick={handlePlay}>
-              <span className="play-icon">{playing ? '⏸' : '▶'}</span>
-            </button>
-            <div className="player-info">
-              <div className="player-title">{showreel.playerTitle}</div>
-              <div className="player-tc">{showreel.timecode}</div>
+      <div className="showreel-player-wrapper reveal">
+        <div className="showreel-player">
+          {/* Background image / video embed */}
+          {showVideo && showreel.videoUrl ? (
+            <iframe
+              className="player-iframe"
+              src={`${showreel.videoUrl}?autoplay=1&rel=0&modestbranding=1&iv_load_policy=3`}
+              allow="autoplay; fullscreen"
+              allowFullScreen
+              title="Showreel"
+            />
+          ) : (
+            <div className="player-bg">
+              <img src={showreel.bgImage} className="player-bg-img" alt="" />
             </div>
+          )}
+
+          {/* Cinematic HUD (Always visible) */}
+          <div className="cine-hud-overlay">
+            <div className="ch-tl"></div>
+            <div className="ch-tr"></div>
+            <div className="ch-bl"></div>
+            <div className="ch-br"></div>
+            <div className="ch-rec">
+              <div className="rec-dot"></div>
+              REC
+            </div>
+            <div className="ch-crosshair"></div>
           </div>
-        )}
+
+          {/* Start Screen Overlay */}
+          {!showVideo && (
+            <div className="player-overlay">
+              <div className={`player-waveform ${playing ? 'playing-indicator' : ''}`} ref={wfRef}></div>
+              <button className="play-btn" onClick={handlePlay}>
+                <span className="play-icon">▶</span>
+              </button>
+              <div className="player-title-overlay">{showreel.playerTitle}</div>
+              <div className="player-timecode">{showreel.timecode}</div>
+            </div>
+          )}
+        </div>
       </div>
     </section>
   );

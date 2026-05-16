@@ -44,21 +44,48 @@
 
 @media(max-width:900px){
   .process-section{padding:4rem 1.5rem; overflow: visible;}
+  .mobile-tap-hint {
+    font-size: 0.75rem;
+    color: var(--gold);
+    margin-bottom: 2rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    animation: fadeUp 1s 0.6s both;
+  }
   .process-steps{
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-    padding-bottom: 2rem;
+    position: relative;
+    cursor: pointer;
+    transition: height 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .process-steps.stacked {
+    height: 320px; /* One card + offset */
+  }
+  .process-steps.expanded {
+    height: 1250px; /* 5 cards * 240px + gaps */
   }
   .p-step {
     border-right: none;
     background: var(--ink);
-    border-radius: 0;
     border: 0.5px solid rgba(212, 168, 67, 0.15);
-    box-shadow: 0 -15px 30px rgba(0,0,0,0.8);
-    position: sticky;
-    top: calc(100px + (var(--i) * 1.5rem));
-    z-index: calc(var(--i) + 1);
+    box-shadow: 0 -10px 25px rgba(0,0,0,0.8);
+    position: absolute;
+    left: 0; right: 0;
+    height: 240px;
+    overflow: hidden;
+    transition: all 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+    z-index: calc(10 - var(--i)); /* Card 0 is on top! */
+    border-radius: 4px;
+  }
+  .process-steps.stacked .p-step {
+    top: calc(var(--i) * 15px); /* Each card peeks out from the bottom */
+    transform: scale(calc(1 - (var(--i) * 0.05))); /* Cards get smaller in the back */
+    opacity: calc(1 - (var(--i) * 0.15));
+  }
+  .process-steps.expanded .p-step {
+    top: calc(var(--i) * 255px); /* 240px height + 15px gap */
+    transform: scale(1);
+    opacity: 1;
   }
   .p-arrow {display:none;}
+  .scroll-indicator {display:none;} /* No scroll indicator needed on mobile stack */
 }

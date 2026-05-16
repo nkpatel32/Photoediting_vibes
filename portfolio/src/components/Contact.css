@@ -35,6 +35,26 @@
 .f-input::placeholder{color:rgba(242,237,228,0.15);}
 .f-row{display:grid;grid-template-columns:1fr 1fr;gap:2rem;}
 
+.f-error {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 0.8rem; color: #ff5c5c;
+  background: rgba(255, 92, 92, 0.1);
+  padding: 10px 15px; border-radius: 4px;
+}
+.f-success {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 0.8rem; color: #4CAF50;
+  background: rgba(76, 175, 80, 0.1);
+  padding: 10px 15px; border-radius: 4px;
+}
+.spin {
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
 @media(max-width:900px){
   .contact-section{grid-template-columns:1fr;gap:3rem;padding:4rem 1.5rem;}
   .f-row{grid-template-columns:1fr;}

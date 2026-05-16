@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useSite } from '../context/SiteContext';
 import ScrollIndicator from './ScrollIndicator';
 import './Testimonials.css';
@@ -18,6 +18,51 @@ export default function Testimonials() {
       setScrollProgress(0);
     }
   };
+
+  useEffect(() => {
+    const grid = scrollRef.current;
+    if (!grid) return;
+
+    let isHovered = false;
+    const setHover = () => isHovered = true;
+    const clearHover = () => isHovered = false;
+
+    grid.addEventListener('mouseenter', setHover);
+    grid.addEventListener('mouseleave', clearHover);
+    grid.addEventListener('touchstart', setHover, { passive: true });
+    grid.addEventListener('touchend', clearHover);
+
+    const interval = setInterval(() => {
+      if (isHovered) return;
+      
+      const { scrollLeft, scrollWidth, clientWidth } = grid;
+      if (scrollWidth <= clientWidth) return; // No need to scroll
+
+      const card = grid.querySelector('.testi-card');
+      if (!card) return;
+      
+      // Calculate width including gap
+      const style = window.getComputedStyle(grid);
+      const gap = parseFloat(style.gap) || 0;
+      const cardWidth = card.offsetWidth + gap;
+
+      if (scrollLeft + clientWidth >= scrollWidth - 10) {
+        // Reached end, rewind
+        grid.scrollTo({ left: 0, behavior: 'smooth' });
+      } else {
+        // Scroll next
+        grid.scrollBy({ left: cardWidth, behavior: 'smooth' });
+      }
+    }, 3000);
+
+    return () => {
+      clearInterval(interval);
+      grid.removeEventListener('mouseenter', setHover);
+      grid.removeEventListener('mouseleave', clearHover);
+      grid.removeEventListener('touchstart', setHover);
+      grid.removeEventListener('touchend', clearHover);
+    };
+  }, []);
 
   return (
     <section className="testi-section reveal">
