@@ -74,7 +74,7 @@ function Lightbox({ items, index, onClose, onNav }) {
     <div className="pin-lightbox" onClick={onClose}>
       <div className="pin-lightbox-content" onClick={e => e.stopPropagation()}>
         <img
-          src={item.image}
+          src={item.fullImage || item.image}
           alt={item.title}
           className="pin-lightbox-img"
         />
@@ -158,7 +158,8 @@ export default function BeforeAfter() {
           id: `pexels-${photo.id}`,
           title: photo.alt || photo.photographer || 'Untitled',
           category: 'Pexels',
-          image: photo.src?.large2x || photo.src?.large || photo.src?.original || '',
+          image: photo.src?.large || photo.src?.medium || '',
+          fullImage: photo.src?.large2x || photo.src?.original || photo.src?.large || '',
           size: autoSize(photo.width || 800, photo.height || 600),
           photographer: photo.photographer,
           pexelsUrl: photo.url,

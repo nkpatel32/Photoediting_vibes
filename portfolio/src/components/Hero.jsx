@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useSite } from '../context/SiteContext';
 import { useGallery } from '../context/GalleryContext';
 import { Play, Send } from 'lucide-react';
+import { optimizeCloudinary } from '../data/utils';
 import './Hero.css';
 
 export default function Hero() {
@@ -14,6 +15,15 @@ export default function Hero() {
   const reelImages = reelImagesRaw.length > 0 ? reelImagesRaw : slideImages;
 
   const [activeSlide, setActiveSlide] = useState(0);
+  const [renderFilmstrip, setRenderFilmstrip] = useState(false);
+
+  useEffect(() => {
+    // Delay filmstrip loading to prioritize Hero LCP images and critical page resources
+    const timer = setTimeout(() => {
+      setRenderFilmstrip(true);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     if (slideImages.length <= 1) return;
@@ -58,7 +68,13 @@ export default function Hero() {
                   key={idx} 
                   className={`hs-slide ${idx === activeSlide ? 'active' : ''}`}
                 >
-                  <img src={img} alt="Showcase" className="hs-img" />
+                  <img 
+                    src={optimizeCloudinary(img, 1200)} 
+                    alt="Showcase" 
+                    className="hs-img" 
+                    loading={idx === 0 ? "eager" : "lazy"}
+                    fetchpriority={idx === 0 ? "high" : "low"}
+                  />
                 </div>
               ))}
               <div className="hs-overlay"></div>
@@ -81,9 +97,9 @@ export default function Hero() {
 
         <div className="filmstrip-h">
           <div className="fs-track">
-            {reelImages.length > 0 && [...reelImages, ...reelImages, ...reelImages].map((img, i) => (
+            {renderFilmstrip && reelImages.length > 0 && [...reelImages, ...reelImages, ...reelImages].map((img, i) => (
               <div key={i} className="fs-frame">
-                <div className="fs-frame-img" style={{ backgroundImage: `url(${img})` }}></div>
+                <div className="fs-frame-img" style={{ backgroundImage: `url(${optimizeCloudinary(img, 300)})` }}></div>
               </div>
             ))}
           </div>

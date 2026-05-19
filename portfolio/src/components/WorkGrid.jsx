@@ -21,7 +21,7 @@ export default function WorkGrid() {
         {works.map((w, i) => (
           <div className={`w-item ${w.cls} reveal`} key={i} style={{ transitionDelay: `${(i % 3) * 0.1}s` }}>
             <div className="w-bg">
-              <img src={w.img} alt={w.title} className="w-bg-img" />
+              <img src={w.img} alt={w.title} className="w-bg-img" loading="lazy" />
             </div>
             <div className="w-overlay">
               <div className="w-cat">{w.cat}</div>

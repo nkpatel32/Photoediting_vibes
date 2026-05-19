@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
+import { optimizeCloudinary } from '../data/utils';
 import './GalleryModal.css';
 
 export default function GalleryModal({ items, initialIdx, onClose }) {
@@ -96,12 +97,12 @@ export default function GalleryModal({ items, initialIdx, onClose }) {
         >
           {/* AFTER (Base layer) */}
           <div className="ms-after">
-            <img src={current.after} alt="After" className="ms-img" draggable={false} />
+            <img src={optimizeCloudinary(current.after, 1200)} alt="After" className="ms-img" draggable={false} />
           </div>
 
           {/* BEFORE (Top layer, clipped from the right) */}
           <div className="ms-before" style={{ clipPath: `inset(0 ${100 - pct}% 0 0)` }}>
-            <img src={current.before} alt="Before" className="ms-img" draggable={false} />
+            <img src={optimizeCloudinary(current.before, 1200)} alt="Before" className="ms-img" draggable={false} />
           </div>
 
           {/* Labels */}
