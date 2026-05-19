@@ -18,6 +18,7 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 3001;
 const MONGO_URI = process.env.MONGO_URI;
+const PEXELS_API_KEY = process.env.PEXELS_API_KEY || '';
 
 // Cloudinary Configuration
 cloudinary.config({
@@ -82,6 +83,8 @@ const configSchema = new mongoose.Schema({
   marquee: Array,
   showreel: Object,
   beforeAfter: Array,
+  pinterestGallery: Array,
+  pexelsConfig: Object,
   services: Array,
   tools: Array,
   process: Array,
@@ -136,6 +139,8 @@ app.put('/api/config', async (req, res) => {
     } else {
       Object.assign(config, req.body);
     }
+    config.markModified('pexelsConfig');
+    config.markModified('pinterestGallery');
     await config.save();
     res.json(config);
   } catch (error) {
@@ -271,6 +276,89 @@ app.post('/api/contact', async (req, res) => {
   }
 });
 
+// --- PEXELS API PROXY ---
+// Supports three modes:
+// 1. Specific Photo IDs (comma-separated list)
+// 2. Collection ID
+// 3. Search query
+app.get('/api/pexels', async (req, res) => {
+  console.log('--- Incoming /api/pexels Request ---');
+  console.log('Query params:', req.query);
+  const apiKey = PEXELS_API_KEY;
+  if (!apiKey) {
+    return res.status(400).json({ error: 'Pexels API key not configured in .env' });
+  }
+
+  try {
+    const photoIdsStr = req.query.photo_ids;
+    const collectionId = req.query.collection_id;
+    const perPage = Math.min(parseInt(req.query.per_page) || 30, 80);
+    const page = parseInt(req.query.page) || 1;
+
+    // --- Mode 1: Specific Photo IDs ---
+    if (photoIdsStr) {
+      const ids = photoIdsStr.split(',').map(id => id.trim()).filter(Boolean);
+      const promises = ids.map(async (id) => {
+        try {
+          const response = await fetch(`https://api.pexels.com/v1/photos/${id}`, {
+            headers: { 'Authorization': apiKey }
+          });
+          if (response.ok) return await response.json();
+          return null;
+        } catch (e) {
+          console.error(`Error fetching photo ${id}:`, e.message);
+          return null;
+        }
+      });
+      
+      const results = await Promise.all(promises);
+      const photos = results.filter(Boolean);
+      return res.json({ photos, total_results: photos.length });
+    }
+
+    // --- Mode 2 & 3: Collection or Search ---
+    let url;
+    if (collectionId) {
+      // Collection mode — fetch from a specific collection
+      url = `https://api.pexels.com/v1/collections/${collectionId}?per_page=${perPage}&page=${page}&type=photos`;
+    } else {
+      // Search mode — keyword search
+      const query = req.query.query || 'photo editing';
+      url = `https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=${perPage}&page=${page}`;
+    }
+
+    const response = await fetch(url, {
+      headers: { 'Authorization': apiKey }
+    });
+
+    if (!response.ok) {
+      const errText = await response.text();
+      return res.status(response.status).json({ error: 'Pexels API error', details: errText });
+    }
+
+    const data = await response.json();
+
+    // For collections, the response has `media` instead of `photos`
+    if (collectionId && data.media) {
+      data.photos = data.media.filter(m => m.type === 'Photo');
+      data.total_results = data.total_results || data.photos.length;
+    }
+
+    // Optionally filter by photographer name (for search mode)
+    const photographer = req.query.photographer;
+    if (photographer && !collectionId) {
+      data.photos = data.photos.filter(p =>
+        p.photographer.toLowerCase().includes(photographer.toLowerCase())
+      );
+    }
+
+    res.json(data);
+  } catch (error) {
+    console.error('Pexels proxy error:', error);
+    res.status(500).json({ error: 'Failed to fetch from Pexels' });
+  }
+});
+
 // --- AUTO-SEED LOGIC ---
 const DEFAULT_SITE = {
   nav: { logo: 'PEV', logoSuffix: 'ibes', igText: '@photoediting_vibes ↗', igLink: 'https://instagram.com/photoediting_vibes' },
@@ -293,9 +381,9 @@ const DEFAULT_SITE = {
     videoUrl: '', bgImage: 'https://images.unsplash.com/photo-1536240478700-b869070f9279?w=1600&q=80',
     timecode: '00:00:00:00 • 4K • 60fps', playerTitle: 'PHOTOEDITING VIBES — 2025 SHOWREEL',
   },
-  beforeAfter: [
-    { id: 1, tag: 'Portrait Retouch', before: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=800&q=80', after: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&q=80' },
-  ],
+  beforeAfter: [],
+  pinterestGallery: [],
+  pexelsConfig: { enabled: true, photoIds: '', collectionId: '', query: 'photo editing', photographer: 'Nishil Patel', perPage: 30 },
   services: [
     { id: 1, icon: 'Camera', name: 'Lightroom Editing', desc: 'Custom preset creation, batch editing.', tools: ['Lightroom'] },
   ],

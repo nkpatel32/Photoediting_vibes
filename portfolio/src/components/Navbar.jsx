@@ -14,11 +14,11 @@ export default function Navbar() {
   };
 
   const navItems = [
-    { id: 'showreel',     label: 'Showreel' },
-    { id: 'before-after', label: 'Before/After' },
-    { id: 'work',         label: 'Work' },
-    { id: 'services',     label: 'Services' },
-    { id: 'contact',      label: 'Contact' }
+    { id: 'showreel',          label: 'Showreel' },
+    { id: 'pinterest-gallery', label: 'Gallery' },
+    { id: 'work',              label: 'Work' },
+    { id: 'services',          label: 'Services' },
+    { id: 'contact',           label: 'Contact' }
   ];
 
   return (

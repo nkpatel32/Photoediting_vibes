@@ -2,7 +2,9 @@ import { createContext, useContext, useState, useCallback, useEffect } from 'rea
 import { DEFAULT_SITE } from '../data/siteData';
 
 const SiteContext = createContext(null);
-const API_URL = 'https://photoediting-vibes.onrender.com/api';
+const BACKEND_URL = 'https://photoediting-vibes.onrender.com/api';
+const LOCAL_URL = 'http://localhost:3001/api';
+const API_URL = window.location.hostname === 'localhost' ? LOCAL_URL : BACKEND_URL;
 
 export function SiteProvider({ children }) {
   const [site, setSite] = useState(DEFAULT_SITE);
@@ -27,7 +29,12 @@ export function SiteProvider({ children }) {
   }, []);
 
   const updateSect = useCallback(async (section, value) => {
-    const updated = { ...site, [section]: value };
+    let updated;
+    if (typeof section === 'object' && section !== null) {
+      updated = { ...site, ...section };
+    } else {
+      updated = { ...site, [section]: value };
+    }
     
     // Save to backend
     try {

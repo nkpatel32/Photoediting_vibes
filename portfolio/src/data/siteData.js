@@ -52,29 +52,59 @@ export const DEFAULT_SITE = {
     playerTitle: 'PHOTOEDITING VIBES — 2025 SHOWREEL',
   },
 
-  // ── BEFORE/AFTER ────────────────────────────
-  beforeAfter: [
+  // ── PINTEREST GALLERY ────────────────────────
+  pinterestGallery: [
     {
-      id: 1, tag: 'Portrait Retouch',
-      before: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=800&q=80',
-      after:  'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&q=80',
+      id: 1, title: 'Portrait Retouch', category: 'Retouching',
+      image: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=800&q=80',
+      size: 'large',
     },
     {
-      id: 2, tag: 'Cinematic Color Grade',
-      before: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=800&q=80',
-      after:  'https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=800&q=80',
+      id: 2, title: 'Cinematic Color Grade', category: 'Color Grading',
+      image: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=800&q=80',
+      size: 'small',
     },
     {
-      id: 3, tag: 'Lightroom Preset',
-      before: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=800&q=80',
-      after:  'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80',
+      id: 3, title: 'Lightroom Preset', category: 'Presets',
+      image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80',
+      size: 'medium',
     },
     {
-      id: 4, tag: 'AI Retouch + Grade',
-      before: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800&q=80',
-      after:  'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&q=80',
+      id: 4, title: 'AI Retouch + Grade', category: 'AI Editing',
+      image: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800&q=80',
+      size: 'xl',
+    },
+    {
+      id: 5, title: 'Wedding Film Grade', category: 'Color Grading',
+      image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&q=80',
+      size: 'medium',
+    },
+    {
+      id: 6, title: 'Landscape Edit', category: 'Retouching',
+      image: 'https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=800&q=80',
+      size: 'large',
+    },
+    {
+      id: 7, title: 'Product Photography', category: 'Commercial',
+      image: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=800&q=80',
+      size: 'small',
+    },
+    {
+      id: 8, title: 'Street Photography', category: 'Presets',
+      image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&q=80',
+      size: 'medium',
     },
   ],
+
+  // ── PEXELS CONFIG ──────────────────────────
+  pexelsConfig: {
+    enabled: true,
+    photoIds: '',
+    collectionId: '',
+    query: 'photo editing',
+    photographer: 'Nishil Patel',
+    perPage: 30,
+  },
 
   // ── SERVICES ────────────────────────────────
   services: [

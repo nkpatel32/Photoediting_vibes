@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
-  LayoutDashboard, Home, BarChart3, Type, PlayCircle, Split,
+  LayoutDashboard, Home, BarChart3, Type, PlayCircle, Grid3X3,
   Settings, Wrench, ClipboardList, MessageSquare, Link as LinkIcon,
   LogOut, ExternalLink, Menu, X
 } from 'lucide-react';
@@ -26,7 +26,7 @@ const NAV_ITEMS = [
   { key: 'stats',        icon: <BarChart3 size={18} />,       label: 'Stats' },
   { key: 'marquee',      icon: <Type size={18} />,            label: 'Marquee' },
   { key: 'showreel',     icon: <PlayCircle size={18} />,      label: 'Showreel / Video' },
-  { key: 'beforeafter',  icon: <Split size={18} />,           label: 'Before / After' },
+  { key: 'beforeafter',  icon: <Grid3X3 size={18} />,         label: 'Pinterest Gallery' },
   { key: 'services',     icon: <Settings size={18} />,        label: 'Services' },
   { key: 'tools',        icon: <Wrench size={18} />,          label: 'Tools' },
   { key: 'process',      icon: <ClipboardList size={18} />,   label: 'Process' },

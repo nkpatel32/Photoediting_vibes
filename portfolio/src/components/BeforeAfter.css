@@ -1,83 +1,458 @@
-.ba-section{padding:8rem 4rem;background:var(--dim);}
-.ba-desc{
-  font-size:0.88rem;line-height:1.9;color:rgba(242,237,228,0.4);max-width:480px;
-}
-.ba-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:4rem;}
-.ba-item{position:relative;overflow:hidden;aspect-ratio:4/3;}
-.ba-slider-wrap{
-  position:relative;width:100%;height:100%;
-  user-select:none;overflow:hidden;cursor:ew-resize;
-}
-.ba-before,.ba-after{
-  position:absolute;inset:0;
-}
-.ba-img{
-  width:100%;height:100%;object-fit:cover;
-}
-.ba-before .ba-img{
-  filter:grayscale(0.6) contrast(0.85) brightness(0.85);
-}
-.ba-after{
-  clip-path:inset(0 0 0 50%);
-  transition:clip-path 0s;
-}
-.ba-after .ba-img{
-  filter:saturate(1.3) contrast(1.1);
-}
-.ba-handle{
-  position:absolute;top:0;bottom:0;
-  width:2px;background:var(--gold);
-  left:50%;transform:translateX(-50%);
-  cursor:ew-resize;z-index:10;
-  transition:left 0s;
-}
-.ba-handle::before{
-  content:'◀ ▶';
-  position:absolute;top:50%;left:50%;
-  transform:translate(-50%,-50%);
-  width:36px;height:36px;background:var(--gold);
-  border-radius:50%;display:flex;align-items:center;justify-content:center;
-  font-size:0.5rem;color:var(--ink);letter-spacing:-0.05em;
-  box-shadow:0 0 20px rgba(212,168,67,0.4);
-  white-space:nowrap;padding:0 6px;font-weight:700;
-}
-.ba-labels{
-  position:absolute;bottom:1rem;left:0;right:0;
-  display:flex;justify-content:space-between;padding:0 1rem;
-  z-index:5;pointer-events:none;
-}
-.ba-l,.ba-r{
-  font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;
-  padding:0.25rem 0.6rem;border:0.5px solid;
-}
-.ba-l{color:rgba(242,237,228,0.5);border-color:rgba(242,237,228,0.2);background:rgba(7,7,7,0.6);}
-.ba-r{color:var(--gold);border-color:rgba(212,168,67,0.4);background:rgba(7,7,7,0.6);}
-.ba-tag{
-  position:absolute;top:1rem;left:1rem;
-  font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;
-  padding:0.3rem 0.7rem;background:rgba(7,7,7,0.8);
-  border:0.5px solid rgba(212,168,67,0.25);color:rgba(212,168,67,0.7);
-  z-index:15;
+/* ===== PINTEREST GALLERY SECTION ===== */
+.pin-section {
+  padding: 8rem 4rem;
+  background: var(--dim);
 }
 
-@media(max-width:900px){
-  .ba-section{padding:4rem 1.5rem;}
-  .ba-grid{
-    display: flex;
-    overflow-x: auto;
-    overflow-y: hidden;
-    scroll-snap-type: x mandatory;
-    gap: 1rem;
-    padding-bottom: 1rem;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-  }
-  .ba-grid::-webkit-scrollbar {
-    display: none;
-  }
-  .ba-item{
-    min-width: 85vw;
-    scroll-snap-align: center;
-    flex-shrink: 0;
+.pin-desc {
+  font-size: 0.88rem;
+  line-height: 1.9;
+  color: rgba(242, 237, 228, 0.4);
+  max-width: 520px;
+}
+
+/* ===== MASONRY GRID ===== */
+.pin-grid {
+  column-count: 4;
+  column-gap: 16px;
+  margin-top: 4rem;
+}
+
+/* ===== CARD BASE ===== */
+.pin-card {
+  position: relative;
+  overflow: hidden;
+  break-inside: avoid;
+  margin-bottom: 16px;
+  display: inline-block;
+  width: 100%;
+  border-radius: 12px;
+  cursor: pointer;
+  background: rgba(20, 20, 20, 0.6);
+  border: 0.5px solid rgba(212, 168, 67, 0.08);
+  transition: transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              box-shadow 0.45s ease;
+}
+
+.pin-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5),
+              0 0 30px rgba(212, 168, 67, 0.06);
+}
+
+/* ===== SIZE CLASSES ===== */
+.pin-card .pin-img-wrap {
+  position: relative;
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+}
+
+/* ===== IMAGE ===== */
+.pin-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: saturate(0.8) brightness(0.78);
+  transition: filter 0.6s ease, transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.pin-card:hover .pin-img {
+  filter: saturate(1.1) brightness(0.88);
+  transform: scale(1.08);
+}
+
+/* ===== OVERLAY ===== */
+.pin-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(7, 7, 7, 0.95) 0%,
+    rgba(7, 7, 7, 0.4) 45%,
+    transparent 100%
+  );
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1.5rem;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.pin-card:hover .pin-overlay {
+  opacity: 1;
+}
+
+/* ===== OVERLAY CONTENT ===== */
+.pin-overlay-inner {
+  transform: translateY(16px);
+  transition: transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.pin-card:hover .pin-overlay-inner {
+  transform: translateY(0);
+}
+
+.pin-category {
+  font-size: 0.55rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.35rem;
+  font-weight: 500;
+}
+
+.pin-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.5rem;
+  letter-spacing: 0.06em;
+  line-height: 1.1;
+  color: var(--cream);
+  margin-bottom: 0.8rem;
+}
+
+.pin-view-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.6rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(212, 168, 67, 0.85);
+  border: 0.5px solid rgba(212, 168, 67, 0.3);
+  padding: 0.4rem 0.9rem;
+  background: rgba(212, 168, 67, 0.06);
+  backdrop-filter: blur(8px);
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.pin-card:hover .pin-view-btn {
+  background: rgba(212, 168, 67, 0.14);
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.pin-view-icon {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+/* ===== SIZE BADGE (top-right) ===== */
+.pin-size-badge {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  font-size: 0.5rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 0.22rem 0.55rem;
+  background: rgba(7, 7, 7, 0.75);
+  border: 0.5px solid rgba(212, 168, 67, 0.18);
+  color: rgba(212, 168, 67, 0.55);
+  z-index: 5;
+  backdrop-filter: blur(6px);
+  border-radius: 4px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.pin-card:hover .pin-size-badge {
+  opacity: 1;
+}
+
+/* ===== LIGHTBOX MODAL ===== */
+.pin-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(3, 3, 3, 0.92);
+  backdrop-filter: blur(20px);
+  animation: pinFadeIn 0.3s ease;
+}
+
+@keyframes pinFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.pin-lightbox-content {
+  position: relative;
+  max-width: 90vw;
+  max-height: 90vh;
+  animation: pinSlideUp 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+@keyframes pinSlideUp {
+  from { opacity: 0; transform: scale(0.92) translateY(24px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.pin-lightbox-img {
+  max-width: 90vw;
+  max-height: 82vh;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+}
+
+.pin-lightbox-info {
+  margin-top: 1.2rem;
+  text-align: center;
+}
+
+.pin-lightbox-cat {
+  font-size: 0.6rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.3rem;
+}
+
+.pin-lightbox-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2rem;
+  letter-spacing: 0.08em;
+  color: var(--cream);
+}
+
+.pin-lightbox-close {
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(212, 168, 67, 0.1);
+  border: 0.5px solid rgba(212, 168, 67, 0.3);
+  color: var(--gold);
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(8px);
+  z-index: 10;
+}
+
+.pin-lightbox-close:hover {
+  background: rgba(212, 168, 67, 0.2);
+  transform: rotate(90deg);
+}
+
+/* ===== NAV ARROWS ===== */
+.pin-lightbox-nav {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(212, 168, 67, 0.08);
+  border: 0.5px solid rgba(212, 168, 67, 0.25);
+  color: var(--gold);
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(8px);
+  z-index: 10;
+}
+
+.pin-lightbox-nav:hover {
+  background: rgba(212, 168, 67, 0.18);
+}
+
+.pin-lightbox-prev { left: 2rem; }
+.pin-lightbox-next { right: 2rem; }
+
+/* ===== COUNTER ===== */
+.pin-lightbox-counter {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(242, 237, 228, 0.35);
+  z-index: 10;
+}
+
+/* ===== FILTER BAR ===== */
+.pin-filters {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+
+.pin-filter-btn {
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 0.4rem 1rem;
+  background: transparent;
+  border: 0.5px solid rgba(212, 168, 67, 0.15);
+  color: rgba(242, 237, 228, 0.4);
+  cursor: pointer;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.pin-filter-btn:hover {
+  border-color: rgba(212, 168, 67, 0.4);
+  color: rgba(242, 237, 228, 0.7);
+}
+
+.pin-filter-btn.active {
+  background: rgba(212, 168, 67, 0.12);
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+/* ===== EMPTY STATE ===== */
+.pin-empty {
+  margin-top: 3rem;
+  padding: 4rem;
+  text-align: center;
+  border: 0.5px solid rgba(212, 168, 67, 0.12);
+  font-size: 0.82rem;
+  color: rgba(242, 237, 228, 0.3);
+  letter-spacing: 0.1em;
+  border-radius: 12px;
+}
+
+.pin-empty a {
+  color: var(--gold);
+  text-decoration: none;
+}
+
+.pin-empty a:hover {
+  text-decoration: underline;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1200px) {
+  .pin-grid {
+    column-count: 3;
   }
 }
+
+@media (max-width: 900px) {
+  .pin-section {
+    padding: 4rem 1.5rem;
+  }
+  .pin-grid {
+    column-count: 2;
+    column-gap: 10px;
+  }
+  .pin-card {
+    margin-bottom: 10px;
+    border-radius: 8px;
+  }
+
+
+  .pin-title {
+    font-size: 1.2rem;
+  }
+  .pin-lightbox-prev { left: 0.75rem; }
+  .pin-lightbox-next { right: 0.75rem; }
+  .pin-lightbox-close { top: 1rem; right: 1rem; }
+}
+
+@media (max-width: 480px) {
+  .pin-grid {
+    column-count: 2;
+    column-gap: 8px;
+  }
+  .pin-card {
+    margin-bottom: 8px;
+    border-radius: 6px;
+  }
+
+
+  .pin-overlay {
+    padding: 0.8rem;
+  }
+  .pin-title {
+    font-size: 1rem;
+  }
+  .pin-category {
+    font-size: 0.5rem;
+  }
+  .pin-view-btn {
+    font-size: 0.5rem;
+    padding: 0.3rem 0.6rem;
+  }
+}
+
+/* ===== LOADING STATE ===== */
+.pin-loading {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(212, 168, 67, 0.5);
+}
+
+.pin-loading-spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(212, 168, 67, 0.15);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: pinSpin 0.8s linear infinite;
+}
+
+@keyframes pinSpin {
+  to { transform: rotate(360deg); }
+}
+
+/* ===== PHOTOGRAPHER CREDIT ===== */
+.pin-photographer {
+  font-size: 0.55rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(242, 237, 228, 0.35);
+  margin-bottom: 0.6rem;
+}
+
+.pin-lightbox-photographer {
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  color: rgba(242, 237, 228, 0.4);
+  margin-top: 0.4rem;
+}
+
+/* ===== PEXELS ATTRIBUTION ===== */
+.pin-pexels-credit {
+  margin-top: 2.5rem;
+  text-align: center;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(242, 237, 228, 0.2);
+}
+
+.pin-pexels-credit a {
+  color: rgba(212, 168, 67, 0.5);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.pin-pexels-credit a:hover {
+  color: var(--gold);
+}
+
