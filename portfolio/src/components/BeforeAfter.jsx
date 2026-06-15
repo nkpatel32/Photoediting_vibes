@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useSite } from '../context/SiteContext';
+import { getOptimizedMediaUrl } from '../data/utils';
 import './BeforeAfter.css';
 
 const BACKEND_URL = 'https://photoediting-vibes.onrender.com/api';
@@ -29,7 +30,7 @@ function PinCard({ item, index, onClick }) {
     >
       <div className="pin-img-wrap">
         <img
-          src={item.image}
+          src={getOptimizedMediaUrl(item.image, 500)}
           alt={item.title}
           className="pin-img"
           loading="lazy"
@@ -74,7 +75,7 @@ function Lightbox({ items, index, onClose, onNav }) {
     <div className="pin-lightbox" onClick={onClose}>
       <div className="pin-lightbox-content" onClick={e => e.stopPropagation()}>
         <img
-          src={item.fullImage || item.image}
+          src={getOptimizedMediaUrl(item.fullImage || item.image, 1200)}
           alt={item.title}
           className="pin-lightbox-img"
         />

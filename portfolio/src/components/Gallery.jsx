@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useGallery } from '../context/GalleryContext';
 import GalleryModal from './GalleryModal';
 import ScrollIndicator from './ScrollIndicator';
-import { optimizeCloudinary } from '../data/utils';
+import { getOptimizedMediaUrl } from '../data/utils';
 import './Gallery.css';
 
 export default function Gallery() {
@@ -61,7 +61,7 @@ export default function Gallery() {
                 onClick={() => setModalIdx(i)}
               >
                 <div className="g-thumb">
-                  <img src={optimizeCloudinary(item.thumb, 500)} alt={item.title} className="g-img" loading="lazy" />
+                  <img src={getOptimizedMediaUrl(item.thumb, 500)} alt={item.title} className="g-img" loading="lazy" />
                 </div>
                 <div className="g-overlay">
                   <div className="g-overlay-inner">

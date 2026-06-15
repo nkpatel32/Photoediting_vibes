@@ -60,10 +60,14 @@ const DEFAULT_SITE = {
     'Motion Graphics', 'Reels & Shorts', 'Brand Content',
   ],
   showreel: {
-    label: '01 — Showreel', heading1: 'WATCH THE', heading2: 'MAGIC', heading3: 'HAPPEN',
-    description: 'A curated reel of my best photo and video edits — Lightroom transformations, cinematic color grades, AI-powered retouching, and motion work.',
-    videoUrl: '', bgImage: 'https://images.unsplash.com/photo-1536240478700-b869070f9279?w=1600&q=80',
-    timecode: '00:00:00:00 • 4K • 60fps', playerTitle: 'PHOTOEDITING VIBES — 2025 SHOWREEL',
+    label: '01 — Showreels', heading1: 'WATCH THE', heading2: 'MAGIC', heading3: 'IN MOTION',
+    description: 'A curated collection of my best vertical video reels, cinematic edits, and pacing tests. Hover to preview, click to play with sound.',
+    reels: [
+      { id: '1', title: 'Cinematic Grade', videoUrl: 'https://res.cloudinary.com/demo/video/upload/v1617187178/short_video.mp4', coverImage: 'https://images.unsplash.com/photo-1536240478700-b869070f9279?w=800&q=80', tag: 'Color Grading' },
+      { id: '2', title: 'Urban Transition', videoUrl: 'https://res.cloudinary.com/demo/video/upload/v1617187178/short_video.mp4', coverImage: 'https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?w=800&q=80', tag: 'Transitions' },
+      { id: '3', title: 'Speed Ramp Showcase', videoUrl: 'https://res.cloudinary.com/demo/video/upload/v1617187178/short_video.mp4', coverImage: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=800&q=80', tag: 'Speed Ramping' },
+      { id: '4', title: 'Product Showcase', videoUrl: 'https://res.cloudinary.com/demo/video/upload/v1617187178/short_video.mp4', coverImage: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=800&q=80', tag: 'Product Edit' },
+    ]
   },
   beforeAfter: [
     { id: 1, tag: 'Portrait Retouch', before: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=800&q=80', after: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&q=80' },

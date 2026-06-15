@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useSite } from '../context/SiteContext';
 import { useGallery } from '../context/GalleryContext';
 import { Play, Send } from 'lucide-react';
-import { optimizeCloudinary } from '../data/utils';
+import { getOptimizedMediaUrl } from '../data/utils';
 import './Hero.css';
 
 export default function Hero() {
@@ -69,7 +69,7 @@ export default function Hero() {
                   className={`hs-slide ${idx === activeSlide ? 'active' : ''}`}
                 >
                   <img 
-                    src={optimizeCloudinary(img, 1200)} 
+                    src={getOptimizedMediaUrl(img, 800)} 
                     alt="Showcase" 
                     className="hs-img" 
                     loading={idx === 0 ? "eager" : "lazy"}
@@ -99,7 +99,7 @@ export default function Hero() {
           <div className="fs-track">
             {renderFilmstrip && reelImages.length > 0 && [...reelImages, ...reelImages, ...reelImages].map((img, i) => (
               <div key={i} className="fs-frame">
-                <div className="fs-frame-img" style={{ backgroundImage: `url(${optimizeCloudinary(img, 300)})` }}></div>
+                <div className="fs-frame-img" style={{ backgroundImage: `url(${getOptimizedMediaUrl(img, 200)})` }}></div>
               </div>
             ))}
           </div>

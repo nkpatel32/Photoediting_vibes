@@ -26,7 +26,11 @@ export function Input({ value, onChange, placeholder, type = 'text', ...rest }) 
 
 import { useState } from 'react';
 
-export function FileInput({ value, onChange, placeholder }) {
+const BACKEND_URL = 'https://photoediting-vibes.onrender.com/api';
+const LOCAL_URL = 'http://localhost:3001/api';
+const API_URL = window.location.hostname === 'localhost' ? LOCAL_URL : BACKEND_URL;
+
+export function FileInput({ value, onChange, placeholder, accept = "image/*,video/*" }) {
   const [uploading, setUploading] = useState(false);
 
   const handleFileUpload = async (e) => {
@@ -38,7 +42,7 @@ export function FileInput({ value, onChange, placeholder }) {
     formData.append('file', file);
 
     try {
-      const res = await fetch(`http://localhost:3001/api/upload`, {
+      const res = await fetch(`${API_URL}/upload`, {
         method: 'POST',
         body: formData
       });
@@ -72,7 +76,7 @@ export function FileInput({ value, onChange, placeholder }) {
         {uploading ? 'Uploading...' : 'Upload File'}
         <input 
           type="file" 
-          accept="image/*" 
+          accept={accept}
           onChange={handleFileUpload} 
           style={{ display: 'none' }} 
           disabled={uploading}

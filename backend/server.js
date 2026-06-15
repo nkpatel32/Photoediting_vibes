@@ -141,6 +141,7 @@ app.put('/api/config', async (req, res) => {
     }
     config.markModified('pexelsConfig');
     config.markModified('pinterestGallery');
+    config.markModified('showreel');
     await config.save();
     res.json(config);
   } catch (error) {
@@ -223,6 +224,7 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
     // Upload to Cloudinary
     const result = await cloudinary.uploader.upload(req.file.path, {
       folder: 'photoediting_vibes',
+      resource_type: 'auto',
     });
 
     // Delete local file after upload
@@ -376,10 +378,14 @@ const DEFAULT_SITE = {
   ],
   marquee: [ 'Lightroom Editing', 'AI Photo Editing', 'Color Grading', 'Video Editing', 'Cinematic LUTs', 'Photo Retouching', 'Motion Graphics', 'Reels & Shorts', 'Brand Content' ],
   showreel: {
-    label: '01 — Showreel', heading1: 'WATCH THE', heading2: 'MAGIC', heading3: 'HAPPEN',
-    description: 'A curated reel of my best photo and video edits.',
-    videoUrl: '', bgImage: 'https://images.unsplash.com/photo-1536240478700-b869070f9279?w=1600&q=80',
-    timecode: '00:00:00:00 • 4K • 60fps', playerTitle: 'PHOTOEDITING VIBES — 2025 SHOWREEL',
+    label: '01 — Showreels', heading1: 'WATCH THE', heading2: 'MAGIC', heading3: 'IN MOTION',
+    description: 'A curated collection of my best vertical video reels, cinematic edits, and pacing tests. Hover to preview, click to play with sound.',
+    reels: [
+      { id: '1', title: 'Cinematic Grade', videoUrl: 'https://res.cloudinary.com/demo/video/upload/v1617187178/short_video.mp4', coverImage: 'https://images.unsplash.com/photo-1536240478700-b869070f9279?w=800&q=80', tag: 'Color Grading' },
+      { id: '2', title: 'Urban Transition', videoUrl: 'https://res.cloudinary.com/demo/video/upload/v1617187178/short_video.mp4', coverImage: 'https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?w=800&q=80', tag: 'Transitions' },
+      { id: '3', title: 'Speed Ramp Showcase', videoUrl: 'https://res.cloudinary.com/demo/video/upload/v1617187178/short_video.mp4', coverImage: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=800&q=80', tag: 'Speed Ramping' },
+      { id: '4', title: 'Product Showcase', videoUrl: 'https://res.cloudinary.com/demo/video/upload/v1617187178/short_video.mp4', coverImage: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=800&q=80', tag: 'Product Edit' },
+    ]
   },
   beforeAfter: [],
   pinterestGallery: [],
