@@ -39,8 +39,11 @@
   width: 100%;
 }
 
-/* Layout variants (Overrides removed for masonry) */
-.g-large, .g-sm, .g-wide, .g-sm2 {}
+/* Layout variants */
+.g-item.g-sm .g-thumb { aspect-ratio: 4/3; }
+.g-item.g-sm2 .g-thumb { aspect-ratio: 1/1; }
+.g-item.g-large .g-thumb { aspect-ratio: 2/3; }
+.g-item.g-wide .g-thumb { aspect-ratio: 16/9; }
 
 /* Thumbnail */
 .g-thumb {
@@ -48,10 +51,12 @@
   width: 100%;
   display: block;
   overflow: hidden;
+  background: rgba(255, 255, 255, 0.02);
 }
 .g-img {
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
   display: block;
   filter: saturate(0.75) brightness(0.72);
   transition: filter 0.5s, transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);

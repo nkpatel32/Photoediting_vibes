@@ -49,7 +49,7 @@ function ReelCard({ reel, index, onClick }) {
         ) : null}
 
         {/* Muted Hover Video Preview */}
-        {isDirect && reel.videoUrl && (
+        {isDirect && reel.videoUrl && (hovered || !reel.coverImage) && (
           <video
             ref={videoRef}
             src={getOptimizedMediaUrl(reel.videoUrl, 480)}
@@ -57,7 +57,7 @@ function ReelCard({ reel, index, onClick }) {
             muted
             loop
             playsInline
-            preload="metadata"
+            preload={hovered ? "auto" : "none"}
             onLoadedData={() => setVideoLoaded(true)}
           />
         )}

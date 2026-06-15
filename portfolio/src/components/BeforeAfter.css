@@ -41,17 +41,23 @@
 }
 
 /* ===== SIZE CLASSES ===== */
+.pin-card.pin-small .pin-img-wrap { aspect-ratio: 4/3; }
+.pin-card.pin-medium .pin-img-wrap { aspect-ratio: 1/1; }
+.pin-card.pin-large .pin-img-wrap { aspect-ratio: 2/3; }
+.pin-card.pin-xl .pin-img-wrap { aspect-ratio: 9/16; }
+
 .pin-card .pin-img-wrap {
   position: relative;
   width: 100%;
-  height: auto;
   overflow: hidden;
+  background: rgba(255, 255, 255, 0.02);
 }
 
 /* ===== IMAGE ===== */
 .pin-img {
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
   display: block;
   filter: saturate(0.8) brightness(0.78);
   transition: filter 0.6s ease, transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
