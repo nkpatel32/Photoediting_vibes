@@ -19,8 +19,20 @@ function autoSize(width, height) {
   return 'small';
 }
 
+const getDimensionsForSize = (size) => {
+  switch (size) {
+    case 'small': return { width: 400, height: 300 };
+    case 'xl': return { width: 400, height: 711 };
+    case 'large': return { width: 400, height: 600 };
+    case 'medium':
+    default:
+      return { width: 400, height: 400 };
+  }
+};
+
 function PinCard({ item, index, onClick }) {
   const sizeClass = `pin-${item.size || 'medium'}`;
+  const dims = item.width && item.height ? { width: item.width, height: item.height } : getDimensionsForSize(item.size);
 
   return (
     <div
@@ -34,6 +46,8 @@ function PinCard({ item, index, onClick }) {
           alt={item.title}
           className="pin-img"
           loading="lazy"
+          width={dims.width}
+          height={dims.height}
         />
         <div className="pin-overlay">
           <div className="pin-overlay-inner">
@@ -162,6 +176,8 @@ export default function BeforeAfter() {
           image: photo.src?.large || photo.src?.medium || '',
           fullImage: photo.src?.large2x || photo.src?.original || photo.src?.large || '',
           size: autoSize(photo.width || 800, photo.height || 600),
+          width: photo.width || 800,
+          height: photo.height || 600,
           photographer: photo.photographer,
           pexelsUrl: photo.url,
           source: 'pexels',

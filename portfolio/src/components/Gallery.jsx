@@ -5,6 +5,17 @@ import ScrollIndicator from './ScrollIndicator';
 import { getOptimizedMediaUrl } from '../data/utils';
 import './Gallery.css';
 
+const getDimensionsForClass = (cls) => {
+  switch (cls) {
+    case 'g-sm': return { width: 400, height: 300 };
+    case 'g-sm2': return { width: 400, height: 400 };
+    case 'g-large': return { width: 400, height: 600 };
+    case 'g-wide': return { width: 400, height: 225 };
+    default:
+      return { width: 400, height: 300 };
+  }
+};
+
 export default function Gallery() {
   const { items } = useGallery();
   const [modalIdx, setModalIdx] = useState(null); // null = closed, number = open
@@ -53,29 +64,39 @@ export default function Gallery() {
       ) : (
         <>
           <div className="gallery-grid" ref={scrollRef} onScroll={handleScroll}>
-            {items.map((item, i) => (
-              <div
-                key={item.id}
-                className={`g-item ${item.cls} reveal`}
-                style={{ transitionDelay: `${(i % 3) * 0.1}s` }}
-                onClick={() => setModalIdx(i)}
-              >
-                <div className="g-thumb">
-                  <img src={getOptimizedMediaUrl(item.thumb, 500)} alt={item.title} className="g-img" loading="lazy" />
-                </div>
-                <div className="g-overlay">
-                  <div className="g-overlay-inner">
-                    <div className="g-cat">{item.cat}</div>
-                    <div className="g-title">{item.title}</div>
-                    <div className="g-cta">
-                      <span className="g-cta-icon">⟷</span>
-                      View Before / After
+            {items.map((item, i) => {
+              const dims = getDimensionsForClass(item.cls);
+              return (
+                <div
+                  key={item.id}
+                  className={`g-item ${item.cls} reveal`}
+                  style={{ transitionDelay: `${(i % 3) * 0.1}s` }}
+                  onClick={() => setModalIdx(i)}
+                >
+                  <div className="g-thumb">
+                    <img 
+                      src={getOptimizedMediaUrl(item.thumb, 500)} 
+                      alt={item.title} 
+                      className="g-img" 
+                      loading="lazy" 
+                      width={dims.width}
+                      height={dims.height}
+                    />
+                  </div>
+                  <div className="g-overlay">
+                    <div className="g-overlay-inner">
+                      <div className="g-cat">{item.cat}</div>
+                      <div className="g-title">{item.title}</div>
+                      <div className="g-cta">
+                        <span className="g-cta-icon">⟷</span>
+                        View Before / After
+                      </div>
                     </div>
                   </div>
+                  <div className="g-badge">{item.tag}</div>
                 </div>
-                <div className="g-badge">{item.tag}</div>
-              </div>
-            ))}
+              );
+            })}
           </div>
           <ScrollIndicator progress={scrollProgress} />
         </>
