@@ -58,7 +58,7 @@ export function SiteProvider({ children }) {
     setSite(DEFAULT_SITE);
   }, []);
 
-  if (loading) return null; // Still show loader/blank during initial fetch attempt
+  // We render immediately with local defaults and re-hydrate once backend config resolves.
 
   return (
     <SiteContext.Provider value={{ site, updateSect, resetAll }}>
