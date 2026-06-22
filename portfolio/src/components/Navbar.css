@@ -1,52 +1,99 @@
-nav{
-  position:fixed;top:0;left:0;right:0;z-index:500;
-  display:flex;justify-content:space-between;align-items:center;
-  padding:1.25rem 4rem;
-  background:rgba(7,7,7,0.8);
-  backdrop-filter:blur(20px);
-  border-bottom:0.5px solid rgba(212,168,67,0.1);
-  transition:all 0.4s;
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 500;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 4rem;
+  background: rgba(7, 7, 7, 0.8);
+  backdrop-filter: blur(20px);
+  border-bottom: 0.5px solid rgba(212, 168, 67, 0.1);
+  transition: all 0.4s;
 }
-.logo{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:1.4rem;letter-spacing:0.15em;
-  color:var(--gold);
+
+.logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.4rem;
+  letter-spacing: 0.15em;
+  color: var(--gold);
   display: flex;
   align-items: center;
   gap: 0.75rem;
   cursor: pointer;
 }
+
 .nav-logo-img {
   height: 28px;
   width: auto;
   object-fit: contain;
 }
-.logo span{color:var(--paper);opacity:0.4;}
-.nav-links{display:flex;gap:2.5rem;list-style:none;}
-.nav-links a{
-  color:rgba(242,237,228,0.45);text-decoration:none;
-  font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;
-  font-weight:400;transition:color 0.3s;position:relative;cursor:none;
+
+.logo span {
+  color: var(--paper);
+  opacity: 0.4;
 }
-.nav-links a::after{
-  content:'';position:absolute;bottom:-4px;left:0;width:0;height:0.5px;
-  background:var(--gold);transition:width 0.3s;
+
+.nav-links {
+  display: flex;
+  gap: 2.5rem;
+  list-style: none;
 }
-.nav-links a:hover{color:var(--gold);}
-.nav-links a:hover::after{width:100%;}
+
+.nav-links a {
+  color: rgba(242, 237, 228, 0.45);
+  text-decoration: none;
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 400;
+  transition: color 0.3s;
+  position: relative;
+  cursor: none;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 0.5px;
+  background: var(--gold);
+  transition: width 0.3s;
+}
+
+.nav-links a:hover {
+  color: var(--gold);
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
 .nav-actions {
   display: flex;
   align-items: center;
   gap: 1rem;
 }
-.nav-ig{
-  font-size:0.72rem;letter-spacing:0.15em;
-  color:rgba(242,237,228,0.3);
-  border:0.5px solid rgba(212,168,67,0.2);
-  padding:0.5rem 1.2rem;transition:all 0.3s;
-  text-decoration:none;cursor:none;
+
+.nav-ig {
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  color: rgba(242, 237, 228, 0.3);
+  border: 0.5px solid rgba(212, 168, 67, 0.2);
+  padding: 0.5rem 1.2rem;
+  transition: all 0.3s;
+  text-decoration: none;
+  cursor: none;
 }
-.nav-ig:hover{border-color:var(--gold);color:var(--gold);}
+
+.nav-ig:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
 
 .mobile-menu-btn {
   display: none;
@@ -55,6 +102,7 @@ nav{
   color: #f2ede4;
   cursor: pointer;
 }
+
 .mobile-menu-overlay {
   position: fixed;
   inset: 0;
@@ -70,11 +118,13 @@ nav{
   pointer-events: none;
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
 .mobile-menu-overlay.open {
   transform: translateY(0);
   opacity: 1;
   pointer-events: auto;
 }
+
 .mobile-menu-close {
   position: absolute;
   top: 1.5rem;
@@ -85,12 +135,14 @@ nav{
   cursor: pointer;
   padding: 0.5rem;
 }
+
 .mobile-nav-links {
   display: flex;
   flex-direction: column;
   gap: 2rem;
   text-align: center;
 }
+
 .mobile-nav-link {
   font-family: 'Bebas Neue', sans-serif;
   font-size: 3rem;
@@ -101,14 +153,17 @@ nav{
   transform: translateY(-20px);
   transition: all 0.4s ease;
 }
+
 .mobile-menu-overlay.open .mobile-nav-link {
   opacity: 1;
   transform: translateY(0);
   transition-delay: 0.2s;
 }
+
 .mobile-nav-link:hover {
   color: var(--gold);
 }
+
 .mobile-nav-ig {
   margin-top: 2rem;
   font-size: 0.8rem;
@@ -123,15 +178,27 @@ nav{
   transform: translateY(-20px);
   transition: all 0.4s ease;
 }
+
 .mobile-menu-overlay.open .mobile-nav-ig {
   opacity: 1;
   transform: translateY(0);
   transition-delay: 0.4s;
 }
 
-@media(max-width:900px){
-  nav{padding:1.25rem 1.5rem;}
-  .nav-links{display:none;}
-  .nav-ig{display:none;}
-  .mobile-menu-btn {display: block;}
+@media(max-width:900px) {
+  nav {
+    padding: 1.25rem 1.5rem;
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  .nav-ig {
+    display: none;
+  }
+
+  .mobile-menu-btn {
+    display: block;
+  }
 }

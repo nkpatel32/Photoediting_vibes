@@ -2,30 +2,34 @@
 /* DESIGN SYSTEM — photoediting_vibes            */
 /* ============================================= */
 
-*{margin:0;padding:0;box-sizing:border-box;}
-
-:root{
-  --ink:#070707;
-  --paper:#f2ede4;
-  --gold:#d4a843;
-  --ember:#c0392b;
-  --dim:#111;
-  --mid:#1c1c1c;
-  --fog:rgba(242,237,228,0.06);
-  --gfog:rgba(212,168,67,0.08);
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-html{
-  scroll-behavior:smooth;
-  overflow-x:hidden;
+:root {
+  --ink: #070707;
+  --paper: #f2ede4;
+  --gold: #d4a843;
+  --ember: #c0392b;
+  --dim: #111;
+  --mid: #1c1c1c;
+  --fog: rgba(242, 237, 228, 0.06);
+  --gfog: rgba(212, 168, 67, 0.08);
 }
 
-body{
-  background:var(--ink);
-  color:var(--paper);
-  font-family:'Syne',sans-serif;
-  font-weight:300;
-  overflow-x:hidden;
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+body {
+  background: var(--ink);
+  color: var(--paper);
+  font-family: 'Syne', sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
 }
 
 .portfolio-root {
@@ -33,23 +37,100 @@ body{
 }
 
 /* Scrollbar */
-::-webkit-scrollbar{width:6px;}
-::-webkit-scrollbar-track{background:var(--ink);}
-::-webkit-scrollbar-thumb{background:rgba(212,168,67,0.3);border-radius:3px;}
-::-webkit-scrollbar-thumb:hover{background:var(--gold);}
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--ink);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(212, 168, 67, 0.3);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold);
+}
 
 /* Selection */
-::selection{
-  background:rgba(212,168,67,0.3);
-  color:var(--paper);
+::selection {
+  background: rgba(212, 168, 67, 0.3);
+  color: var(--paper);
 }
 
 /* Global animations */
-@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
-@keyframes gridMove{from{background-position:0 0}to{background-position:60px 60px}}
-@keyframes orb{to{transform:rotate(360deg)}}
-@keyframes scrollAnim{to{left:100%}}
-@keyframes marqueeAnim{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-@keyframes loaderPulse{0%,100%{opacity:0.3}50%{opacity:1}}
-@keyframes loadFill{to{width:100%}}
-@keyframes wfAnim{0%,100%{height:4px}50%{height:36px}}
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px)
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0)
+  }
+}
+
+@keyframes gridMove {
+  from {
+    background-position: 0 0
+  }
+
+  to {
+    background-position: 60px 60px
+  }
+}
+
+@keyframes orb {
+  to {
+    transform: rotate(360deg)
+  }
+}
+
+@keyframes scrollAnim {
+  to {
+    left: 100%
+  }
+}
+
+@keyframes marqueeAnim {
+  from {
+    transform: translateX(0)
+  }
+
+  to {
+    transform: translateX(-50%)
+  }
+}
+
+@keyframes loaderPulse {
+
+  0%,
+  100% {
+    opacity: 0.3
+  }
+
+  50% {
+    opacity: 1
+  }
+}
+
+@keyframes loadFill {
+  to {
+    width: 100%
+  }
+}
+
+@keyframes wfAnim {
+
+  0%,
+  100% {
+    height: 4px
+  }
+
+  50% {
+    height: 36px
+  }
+}
