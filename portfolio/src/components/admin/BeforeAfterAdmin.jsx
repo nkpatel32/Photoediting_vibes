@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSite } from '../../context/SiteContext';
 import { SectionWrap, Field, Input, FileInput, Row, IconBtn, ImgPreview, Divider } from './AdminFields';
+import { fetchWithRetry } from '../../data/utils';
 
 const SIZE_OPTIONS = [
   { value: 'small',  label: 'Small (200px)' },
@@ -133,7 +134,7 @@ export default function BeforeAfterAdmin() {
         mode = 'search';
       }
 
-      const res = await fetch(url);
+      const res = await fetchWithRetry(url);
       const data = await res.json();
 
       if (res.ok) {

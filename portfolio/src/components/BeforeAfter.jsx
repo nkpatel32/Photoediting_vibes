@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useSite } from '../context/SiteContext';
-import { getOptimizedMediaUrl } from '../data/utils';
+import { getOptimizedMediaUrl, fetchWithRetry } from '../data/utils';
 import './BeforeAfter.css';
 
 const BACKEND_URL = 'https://photoediting-vibes.onrender.com/api';
@@ -163,7 +163,7 @@ export default function BeforeAfter() {
           }
         }
         
-        const res = await fetch(url);
+        const res = await fetchWithRetry(url);
         if (!res.ok) throw new Error('Pexels fetch failed');
         const data = await res.json();
         

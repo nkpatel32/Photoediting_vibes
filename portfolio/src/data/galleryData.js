@@ -8,10 +8,12 @@ const BACKEND_URL = 'https://photoediting-vibes.onrender.com/api';
 const LOCAL_URL = 'http://localhost:3001/api';
 const API_URL = window.location.hostname === 'localhost' ? LOCAL_URL : BACKEND_URL;
 
+import { fetchWithRetry } from './utils';
+
 // ── CRUD helpers ─────────────────────────────────────────────────
 export async function getItems() {
   try {
-    const res = await fetch(`${API_URL}/items`);
+    const res = await fetchWithRetry(`${API_URL}/items`);
     if (!res.ok) throw new Error('Network response was not ok');
     return await res.json();
   } catch (error) {
@@ -22,7 +24,7 @@ export async function getItems() {
 
 export async function addItem(item) {
   try {
-    const res = await fetch(`${API_URL}/items`, {
+    const res = await fetchWithRetry(`${API_URL}/items`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(item),
@@ -36,7 +38,7 @@ export async function addItem(item) {
 
 export async function updateItem(id, patch) {
   try {
-    const res = await fetch(`${API_URL}/items/${id}`, {
+    const res = await fetchWithRetry(`${API_URL}/items/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(patch),
@@ -50,7 +52,7 @@ export async function updateItem(id, patch) {
 
 export async function deleteItem(id) {
   try {
-    await fetch(`${API_URL}/items/${id}`, {
+    await fetchWithRetry(`${API_URL}/items/${id}`, {
       method: 'DELETE',
     });
     return id;
@@ -62,7 +64,7 @@ export async function deleteItem(id) {
 
 export async function reorderItems(newOrder) {
   try {
-    await fetch(`${API_URL}/items/reorder`, {
+    await fetchWithRetry(`${API_URL}/items/reorder`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(newOrder),

@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useCallback, useEffect } from 'react';
 import { DEFAULT_SITE } from '../data/siteData';
+import { fetchWithRetry } from '../data/utils';
 
 const SiteContext = createContext(null);
 const BACKEND_URL = 'https://photoediting-vibes.onrender.com/api';
@@ -12,7 +13,7 @@ export function SiteProvider({ children }) {
 
   // Fetch site config from backend
   useEffect(() => {
-    fetch(`${API_URL}/config`)
+    fetchWithRetry(`${API_URL}/config`)
       .then(res => {
         if (!res.ok) throw new Error('Not Found');
         return res.json();
@@ -38,7 +39,7 @@ export function SiteProvider({ children }) {
     
     // Save to backend
     try {
-      const res = await fetch(`${API_URL}/config`, {
+      const res = await fetchWithRetry(`${API_URL}/config`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updated)

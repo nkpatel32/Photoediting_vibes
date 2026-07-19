@@ -48,3 +48,25 @@ export function getOptimizedMediaUrl(url, width = 800) {
 
   return url;
 }
+
+/**
+ * Custom fetch wrapper with retry logic to gracefully handle 
+ * Render free-tier cold starts which can cause initial requests to timeout/fail.
+ */
+export async function fetchWithRetry(url, options = {}, retries = 3, delayMs = 3000) {
+  for (let i = 0; i < retries; i++) {
+    try {
+      const res = await fetch(url, options);
+      if (res.ok) return res;
+      // If it's a 500+ error, we might want to retry. Otherwise, throw.
+      if (res.status < 500) {
+         return res; // Let the caller handle 400/404/etc.
+      }
+      throw new Error(`Server error: ${res.status}`);
+    } catch (err) {
+      if (i === retries - 1) throw err;
+      console.warn(`Fetch failed (${url}), retrying in ${delayMs}ms... (Attempt ${i + 1}/${retries})`);
+      await new Promise(r => setTimeout(r, delayMs));
+    }
+  }
+}
