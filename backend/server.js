@@ -85,6 +85,7 @@ const configSchema = new mongoose.Schema({
   beforeAfter: Array,
   pinterestGallery: Array,
   pexelsConfig: Object,
+  storyboard: Object,
   services: Array,
   tools: Array,
   process: Array,
@@ -142,6 +143,7 @@ app.put('/api/config', async (req, res) => {
     config.markModified('pexelsConfig');
     config.markModified('pinterestGallery');
     config.markModified('showreel');
+    config.markModified('storyboard');
     await config.save();
     res.json(config);
   } catch (error) {
@@ -390,6 +392,36 @@ const DEFAULT_SITE = {
   beforeAfter: [],
   pinterestGallery: [],
   pexelsConfig: { enabled: true, photoIds: '', collectionId: '', query: 'photo editing', photographer: 'Nishil Patel', perPage: 30 },
+  storyboard: {
+    enabled: true,
+    title: 'The edit board',
+    subtitle: 'STORY MAP · IN PROGRESS',
+    legendLeft: '9 FRAMES · 2 CLIPPINGS · 8 NOTES',
+    legendRight: 'RED THREAD = STORY ORDER',
+    items: [
+      { id: 1, type: 'photo', url: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=80', color: false, pin: 'red' },
+      { id: 2, type: 'photo', url: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80', color: false, pin: 'red' },
+      { id: 3, type: 'photo', url: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=500&q=80', color: false, pin: 'yellow' },
+      { id: 4, type: 'photo', url: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&q=80', color: false, pin: 'red' },
+      { id: 5, type: 'photo', url: 'https://images.unsplash.com/photo-1533158307587-828f0a76ef46?w=400&q=80', color: false, pin: 'red' },
+      { id: 6, type: 'photo', url: 'https://images.unsplash.com/photo-1465146633011-14f8e0781093?w=400&q=80', color: true, pin: 'yellow' },
+      { id: 7, type: 'photo', url: 'https://images.unsplash.com/photo-1493246507139-91e8fad9978e?w=400&q=80', color: true, pin: 'red' },
+      { id: 8, type: 'photo', url: 'https://images.unsplash.com/photo-1500462918059-b1a0cb512f1d?w=400&q=80', color: false, pin: 'red' },
+      { id: 9, type: 'photo', url: 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=400&q=80', color: true, pin: 'yellow' },
+      
+      { id: 10, type: 'sticky', text: 'N°1' },
+      { id: 11, type: 'sticky', text: 'N°2' },
+      { id: 12, type: 'sticky', text: '17 MAY<br>N°3' },
+      { id: 13, type: 'sticky', text: '12 MAY<br>N°4' },
+      { id: 14, type: 'sticky', text: '15 MAY<br>T. N°6' },
+      { id: 15, type: 'sticky', text: 'N°7 — ?' },
+      { id: 16, type: 'sticky', text: 'N°4B' },
+      { id: 17, type: 'sticky', text: '13 MAY' },
+
+      { id: 18, type: 'clipping', kicker: 'City Life Daily', title: 'THE CUT', text: 'Frame found reworked overnight — grade traced back to a single reel.' },
+      { id: 19, type: 'clipping', kicker: 'Behind the edit', title: 'Lost in the timeline', text: 'Six versions later, the final cut finds its color.' },
+    ]
+  },
   services: [
     { id: 1, icon: 'Camera', name: 'Lightroom Editing', desc: 'Custom preset creation, batch editing.', tools: ['Lightroom'] },
   ],

@@ -12,6 +12,7 @@ import HeroAdmin           from '../components/admin/HeroAdmin';
 import StatsAdmin          from '../components/admin/StatsAdmin';
 import MarqueeAdmin        from '../components/admin/MarqueeAdmin';
 import ShowreelAdmin       from '../components/admin/ShowreelAdmin';
+import StoryboardAdmin     from '../components/admin/StoryboardAdmin';
 import BeforeAfterAdmin    from '../components/admin/BeforeAfterAdmin';
 import ServicesAdmin       from '../components/admin/ServicesAdmin';
 import ToolsAdmin          from '../components/admin/ToolsAdmin';
@@ -25,6 +26,7 @@ const NAV_ITEMS = [
   { key: 'hero',         icon: <Home size={18} />,            label: 'Hero' },
   { key: 'stats',        icon: <BarChart3 size={18} />,       label: 'Stats' },
   { key: 'marquee',      icon: <Type size={18} />,            label: 'Marquee' },
+  { key: 'storyboard',   icon: <Grid3X3 size={18} />,         label: 'Storyboard' },
   { key: 'showreel',     icon: <PlayCircle size={18} />,      label: 'Showreel / Video' },
   { key: 'beforeafter',  icon: <Grid3X3 size={18} />,         label: 'Pinterest Gallery' },
   { key: 'services',     icon: <Settings size={18} />,        label: 'Services' },
@@ -40,6 +42,7 @@ function SectionContent({ active }) {
     case 'hero':         return <HeroAdmin />;
     case 'stats':        return <StatsAdmin />;
     case 'marquee':      return <MarqueeAdmin />;
+    case 'storyboard':   return <StoryboardAdmin />;
     case 'showreel':     return <ShowreelAdmin />;
     case 'beforeafter':  return <BeforeAfterAdmin />;
     case 'services':     return <ServicesAdmin />;
