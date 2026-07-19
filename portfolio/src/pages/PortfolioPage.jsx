@@ -5,6 +5,7 @@ import Navbar        from '../components/Navbar';
 import Hero          from '../components/Hero';
 import Stats         from '../components/Stats';
 import Marquee       from '../components/Marquee';
+import Pinboard      from '../components/Pinboard';
 import Showreel      from '../components/Showreel';
 import BeforeAfter   from '../components/BeforeAfter';
 import Services      from '../components/Services';
@@ -46,6 +47,7 @@ export default function PortfolioPage() {
       <Hero />
       <Stats />
       <Marquee />
+      <Pinboard />
       <Showreel />
       <BeforeAfter />
       <Services />
