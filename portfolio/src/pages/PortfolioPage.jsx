@@ -1,20 +1,22 @@
-import { useEffect } from 'react';
+import React, { useEffect, Suspense, lazy } from 'react';
 import CustomCursor  from '../components/CustomCursor';
 import CameraLensIntro from '../components/CameraLensIntro';
 import Navbar        from '../components/Navbar';
-import Hero          from '../components/Hero';
-import Stats         from '../components/Stats';
-import Marquee       from '../components/Marquee';
-import Pinboard      from '../components/Pinboard';
-import Showreel      from '../components/Showreel';
-import BeforeAfter   from '../components/BeforeAfter';
-import Services      from '../components/Services';
-import Gallery       from '../components/Gallery';
-import Tools         from '../components/Tools';
-import Process       from '../components/Process';
-import Testimonials  from '../components/Testimonials';
-import Contact       from '../components/Contact';
-import Footer        from '../components/Footer';
+
+// Lazy load below-the-fold and heavy components
+const Hero          = lazy(() => import('../components/Hero'));
+const Stats         = lazy(() => import('../components/Stats'));
+const Marquee       = lazy(() => import('../components/Marquee'));
+const Pinboard      = lazy(() => import('../components/Pinboard'));
+const Showreel      = lazy(() => import('../components/Showreel'));
+const BeforeAfter   = lazy(() => import('../components/BeforeAfter'));
+const Services      = lazy(() => import('../components/Services'));
+const Gallery       = lazy(() => import('../components/Gallery'));
+const Tools         = lazy(() => import('../components/Tools'));
+const Process       = lazy(() => import('../components/Process'));
+const Testimonials  = lazy(() => import('../components/Testimonials'));
+const Contact       = lazy(() => import('../components/Contact'));
+const Footer        = lazy(() => import('../components/Footer'));
 
 export default function PortfolioPage() {
   useEffect(() => {
@@ -44,19 +46,26 @@ export default function PortfolioPage() {
       <CustomCursor />
       <CameraLensIntro />
       <Navbar />
-      <Hero />
-      <Stats />
-      <Marquee />
-      <Pinboard />
-      <Showreel />
-      <BeforeAfter />
-      <Services />
-      <Gallery />
-      <Tools />
-      <Process />
-      <Testimonials />
-      <Contact />
-      <Footer />
+      
+      {/* 
+        Suspense boundary for lazy loaded components.
+        Provides a seamless loading state for the heavy UI parts.
+      */}
+      <Suspense fallback={<div style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Loading content...</div>}>
+        <Hero />
+        <Stats />
+        <Marquee />
+        <Pinboard />
+        <Showreel />
+        <BeforeAfter />
+        <Services />
+        <Gallery />
+        <Tools />
+        <Process />
+        <Testimonials />
+        <Contact />
+        <Footer />
+      </Suspense>
     </div>
   );
 }

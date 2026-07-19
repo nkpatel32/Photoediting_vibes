@@ -221,7 +221,7 @@ export function updateSection(section, value) {
   return updated;
 }
 
-function deepMerge(defaults, overrides) {
+export function deepMerge(defaults, overrides) {
   const result = { ...defaults };
   for (const key of Object.keys(overrides)) {
     if (

@@ -1,149 +1,215 @@
-/* ---------- cinematic pinboard ---------- */
+/* ============================================================
+   PINBOARD COMPONENT
+   ============================================================ */
 .pinboard-section {
-  padding: 80px 48px;
-  border-top: 1px solid rgba(239, 231, 216, 0.08);
-  background: var(--ink);
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 80px 20px;
 }
-
 .pinboard-section .fs-head {
   display: flex;
-  align-items: flex-end;
   justify-content: space-between;
-  margin-bottom: 40px;
+  align-items: flex-end;
+  margin-bottom: 20px;
 }
-
 .pinboard-section .fs-head h2 {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 3rem;
-  letter-spacing: 0.08em;
-  color: var(--paper);
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  font-size: 26px;
+  color: var(--paper); /* matching theme */
 }
-
 .pinboard-section .fs-head .mono {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.75rem;
-  color: var(--gold);
-  letter-spacing: 0.1em;
+  font-size: 11px;
+  color: var(--gold); /* matching theme */
+  letter-spacing: 0.05em;
 }
 
+.board-legend {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 14px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10.5px;
+  color: var(--gold);
+  letter-spacing: 0.05em;
+}
+
+/* ---------- shared board look ---------- */
 .pin-board {
   position: relative;
-  background: #111; /* fallback for --ink-2 if not defined */
-  background-image: radial-gradient(rgba(239, 231, 216, 0.045) 1px, transparent 1px);
-  background-size: 16px 16px;
-  border: 1px solid rgba(239, 231, 216, 0.08);
-  border-radius: 2px;
-  padding: 48px 32px 56px;
-  overflow: hidden;
+  width: 100%;
+  background:
+    repeating-linear-gradient(90deg, rgba(0,0,0,0.14) 0 2px, transparent 2px 140px),
+    linear-gradient(180deg, #2b2018, #201811 60%, #1c150f);
+  border: 10px solid #171009;
+  border-radius: 3px;
+  box-shadow: inset 0 0 80px rgba(0,0,0,0.55), 0 20px 40px rgba(0,0,0,0.5);
 }
 
-/* Red Threads SVG Overlay */
-.red-threads {
+.board-pin {
+  position: absolute;
+  top: -7px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  box-shadow: 0 3px 4px rgba(0,0,0,0.6), inset 0 -2px 2px rgba(0,0,0,0.3);
+  z-index: 5;
+}
+.board-pin.red { background: #b33227; }
+.board-pin.yellow { background: #d9a72e; }
+
+.board-photo {
+  position: relative;
+  background: #efe7d8;
+  padding: 8px 8px 20px;
+  box-shadow: 0 10px 22px rgba(0,0,0,0.5);
+  aspect-ratio: 0.82;
+}
+.board-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: grayscale(1) contrast(1.05);
+}
+.board-photo.color img {
+  filter: saturate(0.9) contrast(1.03);
+}
+
+.sticky {
+  background: #e8d24a;
+  color: #2a2410;
+  font-family: 'Kalam', cursive, sans-serif;
+  font-weight: 700;
+  padding: 9px 11px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+  font-size: 14px;
+  line-height: 1.15;
+  text-align: center;
+}
+
+.clipping {
+  background: #e9e4d6;
+  color: #191713;
+  padding: 12px 14px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.45);
+  font-family: 'Fraunces', serif;
+}
+.clipping .kicker {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 8.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #8a8272;
+}
+.clipping h3 {
+  font-size: 17px;
+  font-weight: 600;
+  margin-top: 3px;
+  line-height: 1.05;
+}
+.clipping p {
+  font-family: 'Inter', sans-serif;
+  font-size: 9.5px;
+  color: #4a4638;
+  margin-top: 5px;
+  line-height: 1.35;
+}
+
+/* ================= DESKTOP: absolute collage ================= */
+.board-desktop {
+  aspect-ratio: 16/9.2;
+  overflow: hidden;
+}
+.board-item {
+  position: absolute;
+  transform-origin: center center;
+}
+
+.string-svg {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
+  z-index: 2;
   pointer-events: none;
-  z-index: 1; /* Below the cards */
+}
+.string-svg line {
+  stroke: #a12b20;
+  stroke-width: 1.6;
+  opacity: 0.75;
+}
+.string-svg circle {
+  fill: #a12b20;
 }
 
-.red-threads path, .red-threads line {
-  stroke: #c0392b; /* Red thread color */
-  stroke-width: 1.5;
-  fill: none;
-  opacity: 0.8;
-  filter: drop-shadow(0 2px 2px rgba(0,0,0,0.5));
+/* ================= MOBILE: swipeable strip ================= */
+.board-mobile {
+  display: none;
+  padding: 26px 16px 30px;
 }
-
-.pin-grid {
+.board-mobile .strip {
   display: flex;
-  flex-wrap: wrap;
-  gap: 34px 28px;
-  justify-content: flex-start;
-  position: relative;
-  z-index: 2; /* Above the threads */
+  gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 6px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
 }
-
-.pin-card {
-  width: 216px;
-  background: #f2ede4; /* --bone equivalent */
-  padding: 10px 10px 32px;
-  position: relative;
-  box-shadow: 0 14px 26px rgba(0, 0, 0, 0.5);
-  transition: transform .25s ease, box-shadow .25s ease;
+.board-mobile .strip::-webkit-scrollbar {
+  display: none;
 }
-
-.pin-card:hover {
-  transform: scale(1.04) rotate(0deg) !important;
-  box-shadow: 0 20px 34px rgba(0, 0, 0, 0.6);
-  z-index: 5;
+.m-card {
+  flex: 0 0 66vw;
+  max-width: 280px;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 10px;
 }
-
-.pin-card:nth-child(1) { transform: rotate(-5deg); }
-.pin-card:nth-child(2) { transform: rotate(3deg); margin-top: 22px; }
-.pin-card:nth-child(3) { transform: rotate(-2deg); }
-.pin-card:nth-child(4) { transform: rotate(4deg); margin-top: 38px; }
-.pin-card:nth-child(5) { transform: rotate(-3deg); }
-.pin-card:nth-child(6) { transform: rotate(2deg); margin-top: 10px; }
-
-.pin-card img {
+.m-card .board-photo {
   width: 100%;
-  height: 168px;
-  object-fit: cover;
-  display: block;
-  filter: saturate(0.92) contrast(1.02);
+  transform: rotate(var(--r, -2deg));
 }
-
-.pin-card .pin {
-  position: absolute;
-  top: -9px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 15px;
-  height: 15px;
-  border-radius: 50%;
-  background: #d4a843; /* --amber-bright equivalent */
-  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.55), inset 0 -2px 3px rgba(0, 0, 0, 0.25);
-  z-index: 3;
+.m-card .sticky {
+  align-self: flex-start;
+  transform: rotate(calc(var(--r, -2deg) * -1));
+  margin-left: 8px;
 }
-
-.pin-card .cap {
-  position: absolute;
-  bottom: 9px;
-  left: 10px;
-  right: 10px;
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 9.5px;
-  color: #070707; /* --ink equivalent */
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+.m-card .clipping {
+  width: 100%;
+}
+.swipe-hint {
   text-align: center;
+  margin-top: 14px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: var(--gold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.dots {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  margin-top: 10px;
+}
+.dots span {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(239,231,216,0.25);
+}
+.dots span.active {
+  background: #d9a72e;
 }
 
-.pin-card .tapecorner {
-  position: absolute;
-  width: 38px;
-  height: 16px;
-  background: rgba(239, 231, 216, 0.35);
-  top: -6px;
-  z-index: 4;
-}
-
-.pin-card .tapecorner.l {
-  left: -10px;
-  transform: rotate(-40deg);
-}
-
-.pin-card .tapecorner.r {
-  right: -10px;
-  transform: rotate(40deg);
-}
-
-@media (max-width: 768px) {
-  .pinboard-section {
-    padding: 60px 24px;
-  }
-  .pin-grid {
-    justify-content: center;
-  }
+@media (max-width: 860px) {
+  .board-desktop { display: none; }
+  .board-mobile { display: block; }
 }

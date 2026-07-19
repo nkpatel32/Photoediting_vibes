@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useCallback, useEffect } from 'react';
-import { DEFAULT_SITE } from '../data/siteData';
+import { DEFAULT_SITE, deepMerge } from '../data/siteData';
 import { fetchWithRetry } from '../data/utils';
 
 const SiteContext = createContext(null);
@@ -19,7 +19,7 @@ export function SiteProvider({ children }) {
         return res.json();
       })
       .then(data => {
-        if (data && !data.error) setSite(data);
+        if (data && !data.error) setSite(deepMerge(DEFAULT_SITE, data));
         setLoading(false);
       })
       .catch(err => {
@@ -45,7 +45,7 @@ export function SiteProvider({ children }) {
         body: JSON.stringify(updated)
       });
       const data = await res.json();
-      setSite(data);
+      setSite(deepMerge(DEFAULT_SITE, data));
       return data;
     } catch (err) {
       console.error('Failed to update site config:', err);

@@ -73,7 +73,7 @@ export default function Hero() {
                     alt="Showcase" 
                     className="hs-img" 
                     loading={idx === 0 ? "eager" : "lazy"}
-                    fetchpriority={idx === 0 ? "high" : "low"}
+                    fetchPriority={idx === 0 ? "high" : "low"}
                   />
                 </div>
               ))}
