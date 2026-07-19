@@ -14,19 +14,33 @@ function ReelCard({ reel, index, onClick }) {
   const [videoLoaded, setVideoLoaded] = useState(false);
   const isDirect = isVideoUrlDirect(reel.videoUrl);
 
+  const playPromiseRef = useRef(null);
+
   useEffect(() => {
     if (!videoRef.current || !isDirect) return;
+    
     if (hovered) {
-      const playPromise = videoRef.current.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(error => {
+      playPromiseRef.current = videoRef.current.play();
+      if (playPromiseRef.current !== undefined) {
+        playPromiseRef.current.catch(error => {
           // Autoplay was prevented
           console.warn("Hover autoplay blocked:", error);
         });
       }
     } else {
-      videoRef.current.pause();
-      videoRef.current.currentTime = 0;
+      if (playPromiseRef.current !== undefined && playPromiseRef.current !== null) {
+        playPromiseRef.current.then(() => {
+          if (videoRef.current) {
+            videoRef.current.pause();
+            videoRef.current.currentTime = 0;
+          }
+        }).catch(() => {
+          // play was rejected, no need to pause
+        });
+      } else {
+        videoRef.current.pause();
+        videoRef.current.currentTime = 0;
+      }
     }
   }, [hovered, isDirect]);
 
