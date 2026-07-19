@@ -5,13 +5,179 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="photoediting_vibes — Premium visual editing portfolio. Lightroom mastery, cinematic color grades, AI-powered edits. Based in India, working worldwide.">
   <title>photoediting_vibes — Visual Artist Portfolio</title>
+
+  <!-- Preconnect to Google Fonts for faster font loading -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@300;400;500;700&display=swap" rel="stylesheet">
   <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+
+  <!--
+    CRITICAL INLINE CSS — Renders INSTANTLY before any JS/CSS bundle loads.
+    Prevents the white/blank flash on first visit.
+    Uses no external resources — pure inline styles only.
+  -->
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      background: #0d0a04;
+      color: #f2ede4;
+      font-family: system-ui, -apple-system, sans-serif;
+      overflow-x: hidden;
+      width: 100%;
+      min-height: 100vh;
+    }
+
+    /* The inline splash screen shown before React hydrates */
+    #pev-splash {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      background: #0d0a04;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.8rem;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+    #pev-splash.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    /* Brand text — works even if Bebas Neue hasn't loaded yet */
+    #pev-splash .splash-brand {
+      font-family: 'Bebas Neue', 'Arial Black', sans-serif;
+      font-size: clamp(3rem, 8vw, 5rem);
+      letter-spacing: 0.18em;
+      color: #d4a843;
+      text-shadow: 0 0 60px rgba(212,168,67,0.5);
+      animation: splashPulse 2s ease-in-out infinite;
+    }
+
+    /* Progress bar track */
+    #pev-splash .splash-bar-track {
+      width: clamp(120px, 20vw, 200px);
+      height: 1px;
+      background: rgba(212,168,67,0.15);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Animated fill */
+    #pev-splash .splash-bar-fill {
+      position: absolute;
+      top: 0; left: 0; bottom: 0;
+      width: 0%;
+      background: #d4a843;
+      box-shadow: 0 0 12px rgba(212,168,67,0.6);
+      animation: splashFill 2.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+
+    /* Label */
+    #pev-splash .splash-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.45em;
+      text-transform: uppercase;
+      color: rgba(212,168,67,0.35);
+    }
+
+    /* Decorative spinning ring */
+    #pev-splash .splash-ring {
+      position: absolute;
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      border: 1px solid rgba(212,168,67,0.15);
+      border-top-color: rgba(212,168,67,0.6);
+      animation: splashSpin 1.4s linear infinite;
+    }
+    #pev-splash .splash-ring-2 {
+      position: absolute;
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      border: 1px solid rgba(212,168,67,0.07);
+      border-bottom-color: rgba(212,168,67,0.3);
+      animation: splashSpin 2.2s linear infinite reverse;
+    }
+    #pev-splash .splash-rings {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 140px;
+      height: 140px;
+    }
+    #pev-splash .splash-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #d4a843;
+      box-shadow: 0 0 12px rgba(212,168,67,0.8);
+      animation: splashPulse 1.4s ease-in-out infinite;
+    }
+
+    @keyframes splashPulse {
+      0%, 100% { opacity: 0.4; }
+      50%       { opacity: 1;   }
+    }
+    @keyframes splashFill {
+      0%   { width: 0%; }
+      60%  { width: 70%; }
+      85%  { width: 88%; }
+      100% { width: 100%; }
+    }
+    @keyframes splashSpin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
 </head>
 <body>
+
+  <!--
+    INLINE SPLASH — visible IMMEDIATELY, before React loads.
+    Hidden by React via JS once the app is mounted.
+  -->
+  <div id="pev-splash" aria-label="Loading portfolio" role="status">
+    <div class="splash-rings">
+      <div class="splash-ring"></div>
+      <div class="splash-ring-2"></div>
+      <div class="splash-dot"></div>
+    </div>
+    <div class="splash-brand">PEV</div>
+    <div class="splash-bar-track">
+      <div class="splash-bar-fill"></div>
+    </div>
+    <div class="splash-label">Loading Portfolio</div>
+  </div>
+
   <div id="root"></div>
   <script type="module" src="/src/main.jsx"></script>
+
+  <!--
+    Safety fallback: If JS takes too long, the splash bar resets after 8s
+    so users know the page is still working.
+  -->
+  <script>
+    (function() {
+      var splash = document.getElementById('pev-splash');
+      // React will call window.__hidePevSplash() once app mounts.
+      // This timeout is a hard fallback to prevent permanent stuck splash.
+      var safetyTimer = setTimeout(function() {
+        if (splash) splash.classList.add('hidden');
+      }, 10000);
+      window.__hidePevSplash = function() {
+        clearTimeout(safetyTimer);
+        if (splash) {
+          // Small delay to let React paint first frame
+          setTimeout(function() { splash.classList.add('hidden'); }, 100);
+        }
+      };
+    })();
+  </script>
 </body>
 </html>
